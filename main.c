@@ -1,12 +1,15 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 int main()
 {
+    char ch;
     unsigned int row = 8;
     unsigned int column = 8;
     int array[row][column];
-
-    for (size_t i = 0; i < row; i++)
+    while (ch != 'E')
+    {
+        for (size_t i = 0; i < row; i++)
     {
         for (size_t j = 0; j < column; j++)
         {
@@ -22,6 +25,12 @@ int main()
         }
         printf("\n");
     }
+    ch = getch();
+    system("cls");
+    }
+    
+
+    
 
     return 0;
 }
