@@ -3,6 +3,7 @@
 
 int main()
 {
+    printf("mamad omad\n");
     char ch;
     unsigned int row = 8;
     unsigned int column = 8;
