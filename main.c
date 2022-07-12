@@ -2,32 +2,60 @@
 #include <stdlib.h>
 #include <conio.h>
 #define SIZE 10
-void start()
+#define row 8
+#define column 8
+int ColorUser1;
+int ColorUser2;
+
+char menu()
 {
 
-    printf("welcome to  ''4 IN A ROW''  game \n"
-           "we wish you have a nice time \n"
-           "choise what do you want to happen?"
+    printf("\n\nwelcome to  ''4 IN A ROW''  game. \n"
+           "we wish you have a nice time... \n\n"
+           "choise what do you want to happen?\n"
            "1 . (H)ELP\n"
            "2 . (S)TART\n"
-           "3 . (E)XIT\n");
+           "3 . (E)XIT\n"
+           "Enter choise ---->  ");
     char choise;
     scanf("%c", &choise);
-    switch (choise)
-    {
-    case 'H':
-        /* code */
-        break;
-    case 'S':
-        /* code */
-        break;
-    case 'E':
-        /* code */
-        break;
+    return choise;
+}
+void color()
+{
 
-    default:
-        printf("unknown word!!!\n");
-        break;
+    printf("user1 pls choise your color:\n"
+           "Red(0)    Yellow(1)    Green(2)    Blue(3)\n"
+           "Enter choise ---->  ");
+    scanf("%d", &ColorUser1);
+
+    printf("\nuser2 pls choise your color:\n"
+           "you cant choise same color as the user 1\n"
+           "Red(0)    Yellow(1)    Green(2)    Blue(3)\n"
+           "Enter choise ---->  ");
+    scanf("%d", &ColorUser2);
+
+    if (ColorUser1 == ColorUser2)
+    {
+        printf("same color pls change color user (1) or user (2)\n"
+               "tell me user number to change color ---> ");
+        int change = 0;
+        scanf("%d", &change);
+        if (change == 1)
+        {
+            printf("user1 pls choise your color:\n"
+                   "Red(0)    Yellow(1)    Green(2)    Blue(3)\n"
+                   "Enter choise ---->  ");
+            scanf("%d", &ColorUser1);
+        }
+        else if (change == 2)
+        {
+            printf("\nuser2 pls choise your color:\n"
+                   "you cant choise same color as the user 1\n "
+                   "Red(0)    Yellow(1)    Green(2)    Blue(3)\n"
+                   "Enter choise ---->  ");
+            scanf("%d", &ColorUser2);
+        }
     }
 }
 void chart()
@@ -55,7 +83,11 @@ void chart()
         printf("\033[95m%c\033[0m\n", 43); // end finish
     }
 }
-
+void start()
+{
+    color();
+    chart();
+}
 void Square()
 {
     // red 0
@@ -91,38 +123,24 @@ void Square()
 int main()
 {
     char ch;
-    unsigned int row = 8;
-    unsigned int column = 8;
-    int array[row][column];
-    start();
-    // chart();
-    // Square();
+    ch = menu();
 
-    /*
-      while (ch != 'E')
-      {
-          for (size_t i = 0; i < row; i++)
-      {
-          for (size_t j = 0; j < column; j++)
-          {
-              array[row][column] = 0;
-          }
-      }
+    switch (ch)
+    {
+    case 'H':
+        /* code */
+        break;
+    case 'S':
+        start();
+        break;
+    case 'E':
+        /* code */
+        break;
 
-      for (size_t i = 0; i < row; i++)
-      {
-          for (size_t j = 0; j < column; j++)
-          {
-              printf("%d ", array[row][column]);
-          }
-          printf("\n");
-      }
-      ch = getch();
-      system("cls");
+    default:
+        printf("unknown word!!!\n");
+        break;
+    }
 
-
-
-      }
-  */
     return 0;
 }
