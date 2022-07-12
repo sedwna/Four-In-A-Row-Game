@@ -2,20 +2,19 @@
 #include <stdlib.h>
 #include <conio.h>
 #define size 8
-int start(int board[][size], char ch)
+void color(int *ColorUser1, int *ColorUser2)
 {
-    int ColorUser1;
-    int ColorUser2;
+
     printf("user1 pls choise your color:\n"
            "Red(0)    Yellow(1)    Green(2)    Blue(3)\n"
            "Enter choise ---->  ");
-    scanf("%d", &ColorUser1);
+    scanf("%d", ColorUser1);
 
     printf("\nuser2 pls choise your color:\n"
            "you cant choise same color as the user 1\n"
            "Red(0)    Yellow(1)    Green(2)    Blue(3)\n"
            "Enter choise ---->  ");
-    scanf("%d", &ColorUser2);
+    scanf("%d", ColorUser2);
 
     if (ColorUser1 == ColorUser2)
     {
@@ -39,6 +38,13 @@ int start(int board[][size], char ch)
             scanf("%d", &ColorUser2);
         }
     }
+}
+int start(int board[][size], char ch)
+{
+    int ColorUser1;
+    int ColorUser2;
+    color(&ColorUser1, &ColorUser2);
+    printf("\n%d\n%d\n",ColorUser1,ColorUser2);
 
     while (ch != 'E')
     {
@@ -141,7 +147,6 @@ int start(int board[][size], char ch)
                         }
                         check = 1;
                     }
-                    
                 }
             }
             printf("\033[95m%c\033[0m", 179);
@@ -153,9 +158,6 @@ int start(int board[][size], char ch)
             printf("\033[95m%c\033[0m \n", 43);
         }
 
-
-        
-
         int column = -1;
         if (check == 1)
         {
@@ -165,8 +167,7 @@ int start(int board[][size], char ch)
         {
             printf("\n turn user2 enter number of column\n");
         }
-        
-        
+
         scanf("%d", &column);
         for (size_t i = 7; i >= 0; i--)
         {
@@ -228,6 +229,3 @@ int main()
     // system("cls");
     return 0;
 }
-
- 
-
