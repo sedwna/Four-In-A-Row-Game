@@ -29,7 +29,7 @@ void PrintBoard(int board[][size])
         printf("\033[95m%c\033[0m \n", 43);
     }
 }
-void PrintBoard2(int board[][size], int column, int USER, int ColorUser)
+void PrintBoard2(int board[][size], int column, int USER, int ColorUser1, int ColorUser2)
 {
 
     if (USER == 1)
@@ -71,13 +71,110 @@ void PrintBoard2(int board[][size], int column, int USER, int ColorUser)
             }
             else
             {
-                if (USER == 1)
+
+                switch (ColorUser1)
                 {
-                    printf(" %c%c%c ", board[i][j],board[i][j],board[i][j]);
+                case 0:
+                    if (board[i][j] != 177)
+                    {
+                        printf(" ");
+                        for (int y = 0; y < 3; y++)
+                        {
+                            printf("\033[31m%c\033[0m", board[i][j]);
+                        }
+                        printf(" ");
+                    }
+
+                    break;
+                case 1:
+                    if (board[i][j] != 177)
+                    {
+                        printf(" ");
+                        for (int y = 0; y < 3; y++)
+                        {
+                            printf("\033[33m%c\033[0m", board[i][j]);
+                        }
+                        printf(" ");
+                    }
+
+                    break;
+                case 2:
+                    if (board[i][j] != 177)
+                    {
+                        printf(" ");
+                        for (int y = 0; y < 3; y++)
+                        {
+                            printf("\033[32m%c\033[0m", board[i][j]);
+                        }
+                        printf(" ");
+                    }
+
+                    break;
+                case 3:
+                    if (board[i][j] != 177)
+                    {
+                        printf(" ");
+                        for (int y = 0; y < 3; y++)
+                        {
+                            printf("\033[34m%c\033[0m", board[i][j]);
+                        }
+                        printf(" ");
+                    }
+
+                    break;
                 }
-                if (USER == 2)
+
+                switch (ColorUser2)
                 {
-                    printf(" %c%c%c ", board[i][j],board[i][j],board[i][j]);
+                case 0:
+                    if (board[i][j] != 178)
+                    {
+                        printf(" ");
+                        for (int y = 0; y < 3; y++)
+                        {
+                            printf("\033[31m%c\033[0m", board[i][j]);
+                        }
+                        printf(" ");
+                    }
+                   
+                    break;
+                case 1:
+                    if (board[i][j] != 178)
+                    {
+                        printf(" ");
+                        for (int y = 0; y < 3; y++)
+                        {
+                            printf("\033[33m%c\033[0m", board[i][j]);
+                        }
+                        printf(" ");
+                    }
+                    
+                    break;
+                case 2:
+                    if (board[i][j] != 178)
+                    {
+                        printf(" ");
+                        for (int y = 0; y < 3; y++)
+                        {
+                            printf("\033[32m%c\033[0m", board[i][j]);
+                        }
+                        printf(" ");
+                    }
+                   
+                    break;
+                case 3:
+                    if (board[i][j] != 178)
+                    {
+                        printf(" ");
+                        for (int y = 0; y < 3; y++)
+                        {
+                            printf("\033[34m%c\033[0m", board[i][j]);
+                        }
+                        printf(" ");
+                    }
+                    
+
+                    break;
                 }
             }
         }
@@ -133,26 +230,26 @@ int start(int board[][size], char ch)
     int ColorUser2;
     int column1 = 0;
     int column2 = 0;
-    int sum = 2;
+    int turn = 2;
     color(&ColorUser1, &ColorUser2);
     printf("\n%d\n%d\n", ColorUser1, ColorUser2);
     PrintBoard(board);
 
     while (ch != 'E')
     {
-        if (sum % 2 == 0)
+        if (turn % 2 == 0)
         {
             printf("turn user1 choise column --->");
             scanf("%d", &column1);
-            PrintBoard2(board, column1, 1, ColorUser1);
-            sum++;
+            PrintBoard2(board, column1, 1, ColorUser1, ColorUser2);
+            turn++;
         }
         else
         {
             printf("turn user2 choise column --->");
             scanf("%d", &column2);
-            PrintBoard2(board, column2, 2, ColorUser2);
-            sum++;
+            PrintBoard2(board, column2, 2, ColorUser1, ColorUser2);
+            turn++;
         }
     }
 }
