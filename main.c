@@ -2,6 +2,94 @@
 #include <stdlib.h>
 #include <conio.h>
 #define size 8
+void PrintBoard(int board[][size])
+{
+    // start
+    printf("\033[95m%c\033[0m", 43);
+    for (size_t i = 0; i < size * 5 + 7; i++)
+        printf("\033[95m%c\033[0m", 45);
+    printf("\033[95m%c\033[0m \n", 43); // end start
+
+    for (size_t i = 0; i < size; i++)
+    {
+        for (size_t j = 0; j < size; j++)
+        {
+            printf("\033[95m%c\033[0m", 179);
+            if (board[i][j] == 0)
+            {
+                printf("     ");
+            }
+        }
+        printf("\033[95m%c\033[0m", 179);
+        printf("\n");
+
+        printf("\033[95m%c\033[0m", 43);
+        for (size_t i = 0; i < size * 5 + 7; i++)
+            printf("\033[95m%c\033[0m", 45);
+        printf("\033[95m%c\033[0m \n", 43);
+    }
+}
+void PrintBoard2(int board[][size], int column, int USER, int ColorUser)
+{
+
+    if (USER == 1)
+    {
+        for (int i = 7; i >= 0; i--)
+        {
+            if (board[i][column] == 0)
+            {
+                board[i][column] = 178;
+                break;
+            }
+        }
+    }
+    if (USER == 2)
+    {
+        for (int i = 7; i >= 0; i--)
+        {
+            if (board[i][column] == 0)
+            {
+                board[i][column] = 177;
+                break;
+            }
+        }
+    }
+
+    // start
+    printf("\033[95m%c\033[0m", 43);
+    for (size_t i = 0; i < size * 5 + 7; i++)
+        printf("\033[95m%c\033[0m", 45);
+    printf("\033[95m%c\033[0m \n", 43); // end start
+    for (size_t i = 0; i < size; i++)
+    {
+        for (size_t j = 0; j < size; j++)
+        {
+            printf("\033[95m%c\033[0m", 179);
+            if (board[i][j] == 0)
+            {
+                printf("     ");
+            }
+            else
+            {
+                if (USER == 1)
+                {
+                    printf(" %c%c%c ", board[i][j],board[i][j],board[i][j]);
+                }
+                if (USER == 2)
+                {
+                    printf(" %c%c%c ", board[i][j],board[i][j],board[i][j]);
+                }
+            }
+        }
+        printf("\033[95m%c\033[0m", 179);
+        printf("\n");
+
+        printf("\033[95m%c\033[0m", 43);
+        for (size_t i = 0; i < size * 5 + 7; i++)
+            printf("\033[95m%c\033[0m", 45);
+        printf("\033[95m%c\033[0m \n", 43);
+    }
+}
 void color(int *ColorUser1, int *ColorUser2)
 {
 
@@ -43,139 +131,28 @@ int start(int board[][size], char ch)
 {
     int ColorUser1;
     int ColorUser2;
+    int column1 = 0;
+    int column2 = 0;
+    int sum = 2;
     color(&ColorUser1, &ColorUser2);
-    printf("\n%d\n%d\n",ColorUser1,ColorUser2);
+    printf("\n%d\n%d\n", ColorUser1, ColorUser2);
+    PrintBoard(board);
 
     while (ch != 'E')
     {
-
-        // start
-        printf("\033[95m%c\033[0m", 43);
-        for (size_t i = 0; i < size * 5 + 7; i++)
-            printf("\033[95m%c\033[0m", 45);
-        printf("\033[95m%c\033[0m \n", 43); // end start
-        int check = 1;
-        for (size_t i = 0; i < size; i++)
+        if (sum % 2 == 0)
         {
-            for (size_t j = 0; j < size; j++)
-            {
-                printf("\033[95m%c\033[0m", 179);
-                if (board[i][j] == 0)
-                {
-                    printf("     ");
-                }
-                else
-                {
-
-                    if (check == 1)
-                    {
-                        if (ColorUser1 == 0)
-                        {
-                            printf(" ");
-                            for (size_t k = 0; k < 3; k++)
-                            {
-                                printf("\033[31m%c\033[0m", board[i][j]);
-                            }
-                            printf(" ");
-                        }
-                        if (ColorUser1 == 1)
-                        {
-                            printf(" ");
-                            for (size_t k = 0; k < 3; k++)
-                            {
-                                printf("\033[33m%c\033[0m", board[i][j]);
-                            }
-                            printf(" ");
-                        }
-                        if (ColorUser1 == 2)
-                        {
-                            printf(" ");
-                            for (size_t k = 0; k < 3; k++)
-                            {
-                                printf("\033[32m%c\033[0m", board[i][j]);
-                            }
-                            printf(" ");
-                        }
-                        if (ColorUser1 == 3)
-                        {
-                            printf(" ");
-                            for (size_t k = 0; k < 3; k++)
-                            {
-                                printf("\033[34m%c\033[0m", board[i][j]);
-                            }
-                            printf(" ");
-                        }
-                        check = 2;
-                    }
-                    else
-                    {
-                        if (ColorUser2 == 0)
-                        {
-                            printf(" ");
-                            for (size_t k = 0; k < 3; k++)
-                            {
-                                printf("\033[31m%c\033[0m", board[i][j]);
-                            }
-                            printf(" ");
-                        }
-                        if (ColorUser2 == 1)
-                        {
-                            printf(" ");
-                            for (size_t k = 0; k < 3; k++)
-                            {
-                                printf("\033[33m%c\033[0m", board[i][j]);
-                            }
-                            printf(" ");
-                        }
-                        if (ColorUser2 == 2)
-                        {
-                            printf(" ");
-                            for (size_t k = 0; k < 3; k++)
-                            {
-                                printf("\033[32m%c\033[0m", board[i][j]);
-                            }
-                            printf(" ");
-                        }
-                        if (ColorUser2 == 3)
-                        {
-                            printf(" ");
-                            for (size_t k = 0; k < 3; k++)
-                            {
-                                printf("\033[34m%c\033[0m", board[i][j]);
-                            }
-                            printf(" ");
-                        }
-                        check = 1;
-                    }
-                }
-            }
-            printf("\033[95m%c\033[0m", 179);
-            printf("\n");
-
-            printf("\033[95m%c\033[0m", 43);
-            for (size_t i = 0; i < size * 5 + 7; i++)
-                printf("\033[95m%c\033[0m", 45);
-            printf("\033[95m%c\033[0m \n", 43);
+            printf("turn user1 choise column --->");
+            scanf("%d", &column1);
+            PrintBoard2(board, column1, 1, ColorUser1);
+            sum++;
         }
-
-        int column = -1;
-        if (check == 1)
+        else
         {
-            printf("\n turn user1 enter number of column\n");
-        }
-        else if (check == 2)
-        {
-            printf("\n turn user2 enter number of column\n");
-        }
-
-        scanf("%d", &column);
-        for (size_t i = 7; i >= 0; i--)
-        {
-            if (board[i][column] == 0)
-            {
-                board[i][column] = 178;
-                break;
-            }
+            printf("turn user2 choise column --->");
+            scanf("%d", &column2);
+            PrintBoard2(board, column2, 2, ColorUser2);
+            sum++;
         }
     }
 }
