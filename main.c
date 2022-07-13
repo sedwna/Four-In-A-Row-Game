@@ -2,45 +2,38 @@
 #include <stdlib.h>
 #include <conio.h>
 #define size 8
-void PrintBoard(int board[][size])
+char menu()
 {
-    // start
-    printf("\033[95m%c\033[0m", 43);
-    for (size_t i = 0; i < size * 5 + 7; i++)
-        printf("\033[95m%c\033[0m", 45);
-    printf("\033[95m%c\033[0m \n", 43); // end start
 
-    for (size_t i = 0; i < size; i++)
-    {
-        for (size_t j = 0; j < size; j++)
-        {
-            printf("\033[95m%c\033[0m", 179);
-            if (board[i][j] == 0)
-            {
-                printf("     ");
-            }
-        }
-        printf("\033[95m%c\033[0m", 179);
-        printf("\n");
-
-        printf("\033[95m%c\033[0m", 43);
-        for (size_t i = 0; i < size * 5 + 7; i++)
-            printf("\033[95m%c\033[0m", 45);
-        printf("\033[95m%c\033[0m \n", 43);
-    }
+    printf("\n\nwelcome to  ''4 IN A ROW''  game. \n"
+           "we wish you have a nice time... \n\n"
+           "choise what do you want to happen?\n"
+           "1 . (H)ELP\n"
+           "2 . (S)TART\n"
+           "3 . (E)XIT\n"
+           "Enter choise ---->  ");
+    char choise;
+    scanf("%c", &choise);
+    return choise;
 }
-void PrintBoard2(int board[][size], int column, int USER, int ColorUser1, int ColorUser2)
+void PrintBoard(int board[][size], int column, int USER, int ColorUser1, int ColorUser2)
 {
-
+    
     if (USER == 1)
     {
         for (int i = 7; i >= 0; i--)
         {
-            if (board[i][column] == 0)
+            if (board[i][column] == 0 && i != -1)
             {
                 board[i][column] = 178;
                 break;
             }
+            else if (i == -1)
+            {
+                printf("incorrect choise\n"
+                "tell me a new column number\n");
+            }
+            
         }
     }
     if (USER == 2)
@@ -56,6 +49,7 @@ void PrintBoard2(int board[][size], int column, int USER, int ColorUser1, int Co
     }
 
     // start
+    printf("   0     1     2     3     4     5     6     7\n");
     printf("\033[95m%c\033[0m", 43);
     for (size_t i = 0; i < size * 5 + 7; i++)
         printf("\033[95m%c\033[0m", 45);
@@ -136,7 +130,7 @@ void PrintBoard2(int board[][size], int column, int USER, int ColorUser1, int Co
                         }
                         printf(" ");
                     }
-                   
+
                     break;
                 case 1:
                     if (board[i][j] != 178)
@@ -148,7 +142,7 @@ void PrintBoard2(int board[][size], int column, int USER, int ColorUser1, int Co
                         }
                         printf(" ");
                     }
-                    
+
                     break;
                 case 2:
                     if (board[i][j] != 178)
@@ -160,7 +154,7 @@ void PrintBoard2(int board[][size], int column, int USER, int ColorUser1, int Co
                         }
                         printf(" ");
                     }
-                   
+
                     break;
                 case 3:
                     if (board[i][j] != 178)
@@ -172,7 +166,6 @@ void PrintBoard2(int board[][size], int column, int USER, int ColorUser1, int Co
                         }
                         printf(" ");
                     }
-                    
 
                     break;
                 }
@@ -185,6 +178,7 @@ void PrintBoard2(int board[][size], int column, int USER, int ColorUser1, int Co
         for (size_t i = 0; i < size * 5 + 7; i++)
             printf("\033[95m%c\033[0m", 45);
         printf("\033[95m%c\033[0m \n", 43);
+        
     }
 }
 void color(int *ColorUser1, int *ColorUser2)
@@ -232,41 +226,31 @@ int start(int board[][size], char ch)
     int column2 = 0;
     int turn = 2;
     color(&ColorUser1, &ColorUser2);
-    printf("\n%d\n%d\n", ColorUser1, ColorUser2);
-    PrintBoard(board);
+    PrintBoard(board,0,0,0,0);
 
-    while (ch != 'E')
+    while (ch != 69)
     {
+
         if (turn % 2 == 0)
         {
-            printf("turn user1 choise column --->");
+            printf("turn user1 choise column (0-7) --->");
             scanf("%d", &column1);
-            PrintBoard2(board, column1, 1, ColorUser1, ColorUser2);
+            system("cls");
+            PrintBoard(board, column1, 1, ColorUser1, ColorUser2);
             turn++;
         }
         else
         {
-            printf("turn user2 choise column --->");
+            printf("turn user2 choise column (0-7)--->");
             scanf("%d", &column2);
-            PrintBoard2(board, column2, 2, ColorUser1, ColorUser2);
+            system("cls");
+            PrintBoard(board, column2, 2, ColorUser1, ColorUser2);
             turn++;
         }
     }
+    
 }
-char menu()
-{
 
-    printf("\n\nwelcome to  ''4 IN A ROW''  game. \n"
-           "we wish you have a nice time... \n\n"
-           "choise what do you want to happen?\n"
-           "1 . (H)ELP\n"
-           "2 . (S)TART\n"
-           "3 . (E)XIT\n"
-           "Enter choise ---->  ");
-    char choise;
-    scanf("%c", &choise);
-    return choise;
-}
 
 int main()
 {
@@ -292,7 +276,7 @@ int main()
         start(board, ch);
         break;
     case 'E':
-        /* code */
+        printf("until next time, Gby ...\n");
         break;
 
     default:
@@ -300,6 +284,5 @@ int main()
         break;
     }
 
-    // system("cls");
     return 0;
 }
