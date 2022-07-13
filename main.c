@@ -1,7 +1,94 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <conio.h>
+#include <stdbool.h>
 #define size 8
+#define row 8
+bool check_board(int board[][size])
+{
+    int i;
+    int j;
+
+    for (i = 0; i < row; i++) // check kardane satrha
+    {
+        int num = 0;
+
+        for (j = 0; j < size; j++)
+        {
+            if (board[i][j] == board[i][j + 1] && board[i][j] != 0)
+            {
+                num++;
+            }
+
+            else
+            {
+                num = 0;
+            }
+
+            if (num == 3)
+            {
+                return true;
+            }
+        }
+    }
+
+    for (size_t j = 0; j < size; j++) // cheack kardane sotonha
+    {
+        int num = 0;
+
+        for (size_t i = 0; i < row; i++)
+        {
+            if (board[i][j] == board[i + 1][j] && board[i][j] != 0)
+            {
+                num++;
+            }
+
+            else
+            {
+                num = 0;
+            }
+
+            if (num == 3)
+            {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+void user_1(int board[][size], int column1)
+{
+
+    if (check_board(board))
+    {
+        printf("win user1\n");
+    }
+}
+
+void user_2(int board[][size], int column2)
+{
+
+    if (check_board(board))
+    {
+        printf("win user2\n");
+    }
+}
+
+void play(int board[][size], int column, int USER)
+{
+
+    if (USER == 1)
+    {
+        user_1(board, column);
+    }
+
+    else if (USER == 2)
+    {
+        user_2(board, column);
+    }
+}
+
 char menu()
 {
 
@@ -18,7 +105,7 @@ char menu()
 }
 void PrintBoard(int board[][size], int column, int USER, int ColorUser1, int ColorUser2)
 {
-    
+
     if (USER == 1)
     {
         for (int i = 7; i >= 0; i--)
@@ -31,9 +118,8 @@ void PrintBoard(int board[][size], int column, int USER, int ColorUser1, int Col
             else if (i == -1)
             {
                 printf("incorrect choise\n"
-                "tell me a new column number\n");
+                       "tell me a new column number\n");
             }
-            
         }
     }
     if (USER == 2)
@@ -178,7 +264,6 @@ void PrintBoard(int board[][size], int column, int USER, int ColorUser1, int Col
         for (size_t i = 0; i < size * 5 + 7; i++)
             printf("\033[95m%c\033[0m", 45);
         printf("\033[95m%c\033[0m \n", 43);
-        
     }
 }
 void color(int *ColorUser1, int *ColorUser2)
@@ -195,7 +280,7 @@ void color(int *ColorUser1, int *ColorUser2)
            "Enter choise ---->  ");
     scanf("%d", ColorUser2);
 
-    if (ColorUser1 == ColorUser2)
+    if (*ColorUser1 == *ColorUser2)
     {
         printf("same color pls change color user (1) or user (2)\n"
                "tell me user number to change color ---> ");
@@ -206,7 +291,7 @@ void color(int *ColorUser1, int *ColorUser2)
             printf("user1 pls choise your color:\n"
                    "Red(0)    Yellow(1)    Green(2)    Blue(3)\n"
                    "Enter choise ---->  ");
-            scanf("%d", &ColorUser1);
+            scanf("%d", ColorUser1);
         }
         else if (change == 2)
         {
@@ -214,7 +299,7 @@ void color(int *ColorUser1, int *ColorUser2)
                    "you cant choise same color as the user 1\n "
                    "Red(0)    Yellow(1)    Green(2)    Blue(3)\n"
                    "Enter choise ---->  ");
-            scanf("%d", &ColorUser2);
+            scanf("%d", ColorUser2);
         }
     }
 }
@@ -226,8 +311,7 @@ int start(int board[][size], char ch)
     int column2 = 0;
     int turn = 2;
     color(&ColorUser1, &ColorUser2);
-    PrintBoard(board,0,0,0,0);
-
+    PrintBoard(board, 0, 0, 0, 0);
     while (ch != 69)
     {
 
@@ -237,6 +321,7 @@ int start(int board[][size], char ch)
             scanf("%d", &column1);
             system("cls");
             PrintBoard(board, column1, 1, ColorUser1, ColorUser2);
+            play(board, column1, 1);
             turn++;
         }
         else
@@ -245,18 +330,14 @@ int start(int board[][size], char ch)
             scanf("%d", &column2);
             system("cls");
             PrintBoard(board, column2, 2, ColorUser1, ColorUser2);
+            play(board, column1, 2);
             turn++;
         }
     }
-    
 }
-
 
 int main()
 {
-<<<<<<< HEAD
-    
-=======
 
     char ch;
     int board[size][size];
@@ -286,7 +367,6 @@ int main()
         printf("unknown word!!!\n");
         break;
     }
->>>>>>> log
 
     return 0;
 }
