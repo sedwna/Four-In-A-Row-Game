@@ -254,9 +254,6 @@ int start(int board[][size], char ch)
 
 int main()
 {
-<<<<<<< HEAD
-    
-=======
 
     char ch;
     int board[size][size];
@@ -286,7 +283,6 @@ int main()
         printf("unknown word!!!\n");
         break;
     }
->>>>>>> log
 
     return 0;
 }
