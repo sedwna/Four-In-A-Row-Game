@@ -4,7 +4,51 @@
 #include <stdbool.h>
 #define size 8
 #define row 8
-//************************************************************************************************
+
+bool check_board(int board[][size]);
+void play(int board[][size], int USER);
+char menu();
+void PrintBoard(int board[][size], int column, int USER, int ColorUser1, int ColorUser2);
+void color(int *ColorUser1, int *ColorUser2);
+int start(int board[][size], char ch, int ColorUser1, int ColorUser2, int turn);
+
+//*****************************************
+int main()
+{
+    int turn = 2;
+    int ColorUser1;
+    int ColorUser2;
+    char ch;
+    int board[size][size] = {0};
+    ch = menu();
+
+    do
+    {
+        switch (ch)
+        {
+        case 'H':
+            /* code */
+            break;
+        case 'S':
+            color(&ColorUser1, &ColorUser2);
+            PrintBoard(board, 0, 0, 0, 0);
+            start(board, ch, ColorUser1, ColorUser2, turn);
+            break;
+        case 'E':
+            printf("until next time, Gby ...\n");
+            exit(0);
+            break;
+        default:
+            system("cls");
+            printf("\n\033[31m INVALID WORD!!!\033[0m");
+            ch = menu();
+            break;
+        }
+    } while (ch != 'E');
+
+    return 0;
+}
+//*****************************************
 bool check_board(int board[][size])
 {
     int i;
@@ -114,7 +158,7 @@ bool check_board(int board[][size])
         } while (copy_j != 7);
     }
 
-    for (size_t i = 0; i <= 4; i++)// cheack kardane ghotrhaye fari
+    for (size_t i = 0; i <= 4; i++) // cheack kardane ghotrhaye fari
     {
         int num = 0;
         int copy_i = i;
@@ -126,7 +170,7 @@ bool check_board(int board[][size])
             copy_i++;
             copy_j++;
 
-            if(first != 0 && first == board[copy_i][copy_j])
+            if (first != 0 && first == board[copy_i][copy_j])
             {
                 num++;
             }
@@ -139,13 +183,11 @@ bool check_board(int board[][size])
             {
                 return true;
             }
-            
-        } while (copy_i != 7);
-        
-    }
-    
 
-    for (size_t j = 1; j <= 4; j++)// cheack kardane ghotrhaye fari
+        } while (copy_i != 7);
+    }
+
+    for (size_t j = 1; j <= 4; j++) // cheack kardane ghotrhaye fari
     {
         int num = 0;
         int copy_i = 0;
@@ -175,39 +217,20 @@ bool check_board(int board[][size])
 
     return false;
 }
-//************************************************************************************************
-void user_1(int board[][size], int column1)
+//*****************************************
+void play(int board[][size], int USER)
 {
 
-    if (check_board(board))
+    if (check_board(board) && USER == 1)
     {
         printf("win user1\n");
     }
-}
-//************************************************************************************************
-void user_2(int board[][size], int column2)
-{
-
-    if (check_board(board))
+    else if (check_board(board) && USER == 2)
     {
         printf("win user2\n");
     }
 }
-//************************************************************************************************
-void play(int board[][size], int column, int USER)
-{
-
-    if (USER == 1)
-    {
-        user_1(board, column);
-    }
-
-    else if (USER == 2)
-    {
-        user_2(board, column);
-    }
-}
-//************************************************************************************************
+//*****************************************
 char menu()
 {
 
@@ -222,7 +245,7 @@ char menu()
     scanf("%c", &choise);
     return choise;
 }
-//************************************************************************************************
+//*****************************************
 void PrintBoard(int board[][size], int column, int USER, int ColorUser1, int ColorUser2)
 {
 
@@ -230,15 +253,10 @@ void PrintBoard(int board[][size], int column, int USER, int ColorUser1, int Col
     {
         for (int i = 7; i >= 0; i--)
         {
-            if (board[i][column] == 0 && i != -1)
+            if (board[i][column] == 0 )
             {
                 board[i][column] = 178;
                 break;
-            }
-            else if (i == -1)
-            {
-                printf("incorrect choise\n"
-                       "tell me a new column number\n");
             }
         }
     }
@@ -255,7 +273,7 @@ void PrintBoard(int board[][size], int column, int USER, int ColorUser1, int Col
     }
 
     // start
-    printf("   0     1     2     3     4     5     6     7\n");
+    printf("   1     2     3     4     5     6     7     8\n");
     printf("\033[95m%c\033[0m", 43);
     for (size_t i = 0; i < size * 5 + 7; i++)
         printf("\033[95m%c\033[0m", 45);
@@ -271,7 +289,6 @@ void PrintBoard(int board[][size], int column, int USER, int ColorUser1, int Col
             }
             else
             {
-
                 switch (ColorUser1)
                 {
                 case 0:
@@ -386,7 +403,7 @@ void PrintBoard(int board[][size], int column, int USER, int ColorUser1, int Col
         printf("\033[95m%c\033[0m \n", 43);
     }
 }
-//************************************************************************************************
+//*****************************************
 void color(int *ColorUser1, int *ColorUser2)
 {
 
@@ -424,72 +441,47 @@ void color(int *ColorUser1, int *ColorUser2)
         }
     }
 }
-//************************************************************************************************
-int start(int board[][size], char ch)
+//*****************************************
+int start(int board[][size], char ch, int ColorUser1, int ColorUser2, int turn)
 {
-    int ColorUser1;
-    int ColorUser2;
+
     int column1 = 0;
     int column2 = 0;
-    int turn = 2;
-    color(&ColorUser1, &ColorUser2);
-    PrintBoard(board, 0, 0, 0, 0);
+
     while (ch != 69)
     {
 
         if (turn % 2 == 0)
         {
-            printf("turn user1 choise column (0-7) --->");
+            printf("turn user1 choise column (1-8) --->");
             scanf("%d", &column1);
+
+            /* if (column1 > 8 || column1 < 1)
+             {
+                 printf("\n\033[31m INVALID WORD!!!\033[0m\n");
+                 start(board, ch, ColorUser1, ColorUser2, turn);
+             }*/
+
+            column1--;
             system("cls");
             PrintBoard(board, column1, 1, ColorUser1, ColorUser2);
-            play(board, column1, 1);
+            play(board, 1);
             turn++;
         }
         else
         {
-            printf("turn user2 choise column (0-7)--->");
+            printf("turn user2 choise column (1-8)--->");
             scanf("%d", &column2);
+            /*if (column2 > 8 || column2 < 1)
+            {
+                printf("\n\033[31m INVALID WORD!!!\033[0m\n");
+                start(board, ch, ColorUser1, ColorUser2, turn);
+            }*/
+            column2--;
             system("cls");
             PrintBoard(board, column2, 2, ColorUser1, ColorUser2);
-            play(board, column1, 2);
+            play(board, 2);
             turn++;
         }
     }
 }
-//************************************************************************************************
-int main()
-{
-
-    char ch;
-    int board[size][size];
-
-    for (size_t i = 0; i < size; i++)
-    {
-        for (size_t j = 0; j < size; j++)
-        {
-            board[i][j] = 0;
-        }
-    }
-
-    ch = menu();
-    switch (ch)
-    {
-    case 'H':
-        /* code */
-        break;
-    case 'S':
-        start(board, ch);
-        break;
-    case 'E':
-        printf("until next time, Gby ...\n");
-        break;
-
-    default:
-        printf("unknown word!!!\n");
-        break;
-    }
-
-    return 0;
-}
-//************************************************************************************************
