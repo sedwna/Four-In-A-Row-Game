@@ -19,8 +19,8 @@ int main()
     printf("\n\nwelcome to  ''4 IN A ROW''  game. \n"
            "we wish you have a nice time... \n\n");
     int turn = 2;
-    int ColorUser1;
-    int ColorUser2;
+    int ColorUser1 = -1;
+    int ColorUser2 = -1;
     char ch;
     int board[size][size] = {0};
     ch = menu();
@@ -33,19 +33,19 @@ int main()
         case 'H':
         case 'h':
             // system("cls");
-           /* printf(" HELP 4 In a Row\n\n"
+            /* printf(" HELP 4 In a Row\n\n"
 
-                   "your goal is to get four of your pieces\n"
-                   "to line up in a row before the other player does.\n\n"
+                    "your goal is to get four of your pieces\n"
+                    "to line up in a row before the other player does.\n\n"
 
-                   "You choose a game piece color.\n\n"
-                   "You'll have several pieces so you're able to fill in the board\n"
-                   "The board is arranged with empty spaces.\n\n"
+                    "You choose a game piece color.\n\n"
+                    "You'll have several pieces so you're able to fill in the board\n"
+                    "The board is arranged with empty spaces.\n\n"
 
-                   "You and your opponent take turns placing your pieces in those spaces in\n"
-                   "an effort to connect four of your own pieces in a row\n\n"
-                   "you can EXIT ever you enter the (-1) in game.\n");*/
-             ch = menu();
+                    "You and your opponent take turns placing your pieces in those spaces in\n"
+                    "an effort to connect four of your own pieces in a row\n\n"
+                    "you can EXIT ever you enter the (E) in game.\n");*/
+            ch = menu();
 
             break;
 
@@ -247,11 +247,17 @@ void play(int board[][size], int USER)
 
     if (check_board(board) && USER == 1)
     {
-        printf("win user1\n");
+        printf("\n\n\nWIN USER '1' \n");
+        printf("press any key to exit...\n");
+        getch();
+        EXIT();
     }
     else if (check_board(board) && USER == 2)
     {
-        printf("win user2\n");
+        printf("WIN USER '2' \n");
+        printf("press any key to exit...\n");
+        getch();
+        EXIT();
     }
 }
 //*****************************************
@@ -427,68 +433,80 @@ void PrintBoard(int board[][size], int column, int USER, int ColorUser1, int Col
 //*****************************************
 void color(int *ColorUser1, int *ColorUser2)
 {
-
-    printf("USER'1' pls choise your color:\n"
-           "Red(0)    Yellow(1)    Green(2)    Blue(3)\n"
-           "Enter choise ---->  ");
-    scanf("%d", ColorUser1);
-    if (*ColorUser1 == -1)
+    do
     {
-
-        EXIT();
-    }
-
-    printf("\nUSER'2' pls choise your color:\n"
-           "you cant choise same color as the user 1\n"
-           "Red(0)    Yellow(1)    Green(2)    Blue(3)\n"
-           "Enter choise ---->  ");
-    scanf("%d", ColorUser2);
-    if (*ColorUser2 == -1)
-    {
-
-        EXIT();
-    }
-
-    if (*ColorUser1 == *ColorUser2)
-    {
-        printf("same color pls change color USER (1) or USER (2)\n"
-               "tell me user number to change color ---> ");
-        int change = 0;
-        scanf("%d", &change);
-        if (change == 1)
+        printf("USER'1' pls choise your color:\n"
+               "Red(0)    Yellow(1)    Green(2)    Blue(3)\n"
+               "Enter choise ---->  ");
+        scanf("%d", ColorUser1);
+        if (*ColorUser1 == -1)
         {
-            printf("user1 pls choise your color:\n"
-                   "Red(0)    Yellow(1)    Green(2)    Blue(3)\n"
-                   "Enter choise ---->  ");
-            scanf("%d", ColorUser1);
+            EXIT();
         }
-        else if (change == 2)
+    } while (*ColorUser1 >= 4 && *ColorUser1 <= -1);
+    do
+    {
+        printf("\nUSER'2' pls choise your color:\n"
+               "you cant choise same color as the user 1\n"
+               "Red(0)    Yellow(1)    Green(2)    Blue(3)\n"
+               "Enter choise ---->  ");
+        scanf("%d", ColorUser2);
+        if (*ColorUser2 == -1)
         {
-            printf("\nuser2 pls choise your color:\n"
-                   "you cant choise same color as the user 1\n "
-                   "Red(0)    Yellow(1)    Green(2)    Blue(3)\n"
-                   "Enter choise ---->  ");
-            scanf("%d", ColorUser2);
+            EXIT();
         }
-    }
+    } while (*ColorUser2 >= 4 && *ColorUser2 <= -1);
+    do
+    {
+        if (*ColorUser1 == *ColorUser2)
+        {
+            printf("same color pls change color USER (1) or USER (2)\n"
+                   "tell me user number to change color ---> ");
+            int change = 0;
+            scanf("%d", &change);
+            if (change == 1)
+            {
+                printf("user1 pls choise your color:\n"
+                       "Red(0)    Yellow(1)    Green(2)    Blue(3)\n"
+                       "Enter choise ---->  ");
+                scanf("%d", ColorUser1);
+                if (*ColorUser1 == -1)
+                {
+                    EXIT();
+                }
+            }
+            else if (change == 2)
+            {
+                printf("\nuser2 pls choise your color:\n"
+                       "you cant choise same color as the user 1\n "
+                       "Red(0)    Yellow(1)    Green(2)    Blue(3)\n"
+                       "Enter choise ---->  ");
+                scanf("%d", ColorUser2);
+                if (*ColorUser2 == -1)
+                {
+                    EXIT();
+                }
+            }
+        }
+
+    } while (*ColorUser1 == *ColorUser2);
 }
 //*****************************************
 int start(int board[][size], char ch, int ColorUser1, int ColorUser2, int turn)
 {
-    int column1 = 0;
-    int column2 = 0;
 
     while (1)
     {
+        int column1 = 0;
+        int column2 = 0;
         if (turn % 2 == 0)
         {
             do
             {
                 printf("turn USER'1' choise column (1-8) --->");
                 scanf("%d", &column1);
-                if (column1 == -1)
+                if (column1 == 0)
                 {
-
                     EXIT();
                 }
             } while (column1 >= 9 || column1 <= 0);
@@ -505,7 +523,7 @@ int start(int board[][size], char ch, int ColorUser1, int ColorUser2, int turn)
             {
                 printf("turn USER'2' choise column (1-8) --->");
                 scanf("%d", &column2);
-                if (column2 == -1)
+                if (column2 == 0)
                 {
                     EXIT();
                 }
