@@ -5,6 +5,7 @@
 #define size 8
 #define row 8
 
+void EXIT();
 bool check_board(int board[][size]);
 void play(int board[][size], int USER);
 char menu();
@@ -15,6 +16,8 @@ int start(int board[][size], char ch, int ColorUser1, int ColorUser2, int turn);
 //*****************************************
 int main()
 {
+    printf("\n\nwelcome to  ''4 IN A ROW''  game. \n"
+           "we wish you have a nice time... \n\n");
     int turn = 2;
     int ColorUser1;
     int ColorUser2;
@@ -22,29 +25,50 @@ int main()
     int board[size][size] = {0};
     ch = menu();
 
-    do
+    while (1)
     {
         switch (ch)
         {
+
         case 'H':
-            /* code */
+        case 'h':
+            // system("cls");
+           /* printf(" HELP 4 In a Row\n\n"
+
+                   "your goal is to get four of your pieces\n"
+                   "to line up in a row before the other player does.\n\n"
+
+                   "You choose a game piece color.\n\n"
+                   "You'll have several pieces so you're able to fill in the board\n"
+                   "The board is arranged with empty spaces.\n\n"
+
+                   "You and your opponent take turns placing your pieces in those spaces in\n"
+                   "an effort to connect four of your own pieces in a row\n\n"
+                   "you can EXIT ever you enter the (-1) in game.\n");*/
+             ch = menu();
+
             break;
+
         case 'S':
+        case 's':
             color(&ColorUser1, &ColorUser2);
             PrintBoard(board, 0, 0, 0, 0);
             start(board, ch, ColorUser1, ColorUser2, turn);
             break;
+
         case 'E':
-            printf("until next time, Gby ...\n");
-            exit(0);
+        case 'e':
+
+            EXIT();
             break;
+
         default:
             system("cls");
-            printf("\n\033[31m INVALID WORD!!!\033[0m");
+            printf("\n\033[31m PLS ENTER VALID WORD!!! \033[0m\n");
             ch = menu();
             break;
         }
-    } while (ch != 'E');
+    }
 
     return 0;
 }
@@ -233,14 +257,12 @@ void play(int board[][size], int USER)
 //*****************************************
 char menu()
 {
-
-    printf("\n\nwelcome to  ''4 IN A ROW''  game. \n"
-           "we wish you have a nice time... \n\n"
-           "choise what do you want to happen?\n"
-           "1 . (H)ELP\n"
-           "2 . (S)TART\n"
-           "3 . (E)XIT\n"
-           "Enter choise ---->  ");
+    printf(
+        "choise what do you want to happen?\n"
+        "1 . (H)ELP\n"
+        "2 . (S)TART\n"
+        "3 . (E)XIT\n"
+        "Enter choise ---->  ");
     char choise;
     scanf("%c", &choise);
     return choise;
@@ -248,12 +270,11 @@ char menu()
 //*****************************************
 void PrintBoard(int board[][size], int column, int USER, int ColorUser1, int ColorUser2)
 {
-
     if (USER == 1)
     {
         for (int i = 7; i >= 0; i--)
         {
-            if (board[i][column] == 0 )
+            if (board[i][column] == 0)
             {
                 board[i][column] = 178;
                 break;
@@ -407,20 +428,30 @@ void PrintBoard(int board[][size], int column, int USER, int ColorUser1, int Col
 void color(int *ColorUser1, int *ColorUser2)
 {
 
-    printf("user1 pls choise your color:\n"
+    printf("USER'1' pls choise your color:\n"
            "Red(0)    Yellow(1)    Green(2)    Blue(3)\n"
            "Enter choise ---->  ");
     scanf("%d", ColorUser1);
+    if (*ColorUser1 == -1)
+    {
 
-    printf("\nuser2 pls choise your color:\n"
+        EXIT();
+    }
+
+    printf("\nUSER'2' pls choise your color:\n"
            "you cant choise same color as the user 1\n"
            "Red(0)    Yellow(1)    Green(2)    Blue(3)\n"
            "Enter choise ---->  ");
     scanf("%d", ColorUser2);
+    if (*ColorUser2 == -1)
+    {
+
+        EXIT();
+    }
 
     if (*ColorUser1 == *ColorUser2)
     {
-        printf("same color pls change color user (1) or user (2)\n"
+        printf("same color pls change color USER (1) or USER (2)\n"
                "tell me user number to change color ---> ");
         int change = 0;
         scanf("%d", &change);
@@ -444,23 +475,23 @@ void color(int *ColorUser1, int *ColorUser2)
 //*****************************************
 int start(int board[][size], char ch, int ColorUser1, int ColorUser2, int turn)
 {
-
     int column1 = 0;
     int column2 = 0;
 
-    while (ch != 69)
+    while (1)
     {
-
         if (turn % 2 == 0)
         {
-            printf("turn user1 choise column (1-8) --->");
-            scanf("%d", &column1);
+            do
+            {
+                printf("turn USER'1' choise column (1-8) --->");
+                scanf("%d", &column1);
+                if (column1 == -1)
+                {
 
-            /* if (column1 > 8 || column1 < 1)
-             {
-                 printf("\n\033[31m INVALID WORD!!!\033[0m\n");
-                 start(board, ch, ColorUser1, ColorUser2, turn);
-             }*/
+                    EXIT();
+                }
+            } while (column1 >= 9 || column1 <= 0);
 
             column1--;
             system("cls");
@@ -470,13 +501,16 @@ int start(int board[][size], char ch, int ColorUser1, int ColorUser2, int turn)
         }
         else
         {
-            printf("turn user2 choise column (1-8)--->");
-            scanf("%d", &column2);
-            /*if (column2 > 8 || column2 < 1)
+            do
             {
-                printf("\n\033[31m INVALID WORD!!!\033[0m\n");
-                start(board, ch, ColorUser1, ColorUser2, turn);
-            }*/
+                printf("turn USER'2' choise column (1-8) --->");
+                scanf("%d", &column2);
+                if (column2 == -1)
+                {
+                    EXIT();
+                }
+            } while (column2 >= 9 || column2 <= 0);
+
             column2--;
             system("cls");
             PrintBoard(board, column2, 2, ColorUser1, ColorUser2);
@@ -484,4 +518,10 @@ int start(int board[][size], char ch, int ColorUser1, int ColorUser2, int turn)
             turn++;
         }
     }
+}
+void EXIT()
+{
+    system("cls");
+    printf("\n until next time, Gby ...\n");
+    exit(0);
 }
