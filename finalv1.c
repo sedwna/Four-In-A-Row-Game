@@ -435,6 +435,8 @@ void color(int *ColorUser1, int *ColorUser2)
 {
     do
     {
+        *ColorUser1 = -1;
+
         printf("USER'1' pls choise your color:\n"
                "Red(0)    Yellow(1)    Green(2)    Blue(3)\n"
                "Enter choise ---->  ");
@@ -444,8 +446,10 @@ void color(int *ColorUser1, int *ColorUser2)
             EXIT();
         }
     } while (*ColorUser1 >= 4 && *ColorUser1 <= -1);
+
     do
     {
+        *ColorUser2 = -1;
         printf("\nUSER'2' pls choise your color:\n"
                "you cant choise same color as the user 1\n"
                "Red(0)    Yellow(1)    Green(2)    Blue(3)\n"
@@ -456,6 +460,7 @@ void color(int *ColorUser1, int *ColorUser2)
             EXIT();
         }
     } while (*ColorUser2 >= 4 && *ColorUser2 <= -1);
+
     do
     {
         if (*ColorUser1 == *ColorUser2)
@@ -466,6 +471,7 @@ void color(int *ColorUser1, int *ColorUser2)
             scanf("%d", &change);
             if (change == 1)
             {
+                *ColorUser1 = -1;
                 printf("user1 pls choise your color:\n"
                        "Red(0)    Yellow(1)    Green(2)    Blue(3)\n"
                        "Enter choise ---->  ");
@@ -477,6 +483,7 @@ void color(int *ColorUser1, int *ColorUser2)
             }
             else if (change == 2)
             {
+                *ColorUser2 = -1;
                 printf("\nuser2 pls choise your color:\n"
                        "you cant choise same color as the user 1\n "
                        "Red(0)    Yellow(1)    Green(2)    Blue(3)\n"
