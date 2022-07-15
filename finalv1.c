@@ -33,18 +33,24 @@ int main()
         case 'H':
         case 'h':
             // system("cls");
-            /* printf(" HELP 4 In a Row\n\n"
+            printf(" HELP 4 In a Row\n\n"
 
-                    "your goal is to get four of your pieces\n"
-                    "to line up in a row before the other player does.\n\n"
+                   "your goal is to get four of your pieces\n"
+                   "to line up in a row before the other player does.\n\n");
 
-                    "You choose a game piece color.\n\n"
-                    "You'll have several pieces so you're able to fill in the board\n"
-                    "The board is arranged with empty spaces.\n\n"
+            printf("press any key to continue...\n");
+            getch();
 
-                    "You and your opponent take turns placing your pieces in those spaces in\n"
-                    "an effort to connect four of your own pieces in a row\n\n"
-                    "you can EXIT ever you enter the (E) in game.\n");*/
+            printf("You choose a game piece color.\n\n"
+                   "You'll have several pieces so you're able to fill in the board\n"
+                   "The board is arranged with empty spaces.\n\n");
+
+            printf("press any key to continue...\n");
+            getch();
+
+            printf("You and your opponent take turns placing your pieces in those spaces in\n"
+                   "an effort to connect four of your own pieces in a row\n\n"
+                   "you can EXIT ever you enter the (E) in game.\n");
             ch = menu();
 
             break;
@@ -62,11 +68,11 @@ int main()
             EXIT();
             break;
 
-        default:
-            system("cls");
-            printf("\n\033[31m PLS ENTER VALID WORD!!! \033[0m\n");
-            ch = menu();
-            break;
+        //default:
+            //system("cls");
+            //printf("\n\033[31m PLS ENTER VALID WORD!!! \033[0m\n");
+            //ch = menu();
+           // break;
         }
     }
 
@@ -77,6 +83,8 @@ bool check_board(int board[][size])
 {
     int i;
     int j;
+    static int step = 0;
+    step++;
 
     for (i = 0; i < row; i++) // check kardane satrha
     {
@@ -239,20 +247,28 @@ bool check_board(int board[][size])
         } while (copy_j != 7);
     }
 
+    if (step == 64)
+    {
+        printf("Equal\n");
+        printf("\npress any key to exit...\n");
+        getch();
+        EXIT();
+    }
+
     return false;
 }
 //*****************************************
 void play(int board[][size], int USER)
 {
 
-    if (check_board(board) && USER == 1)
+    if (USER == 1 && check_board(board))
     {
         printf("\n\n\nWIN USER '1' \n");
         printf("press any key to exit...\n");
         getch();
         EXIT();
     }
-    else if (check_board(board) && USER == 2)
+    else if (USER == 2 && check_board(board))
     {
         printf("WIN USER '2' \n");
         printf("press any key to exit...\n");
@@ -271,6 +287,7 @@ char menu()
         "Enter choise ---->  ");
     char choise;
     scanf("%c", &choise);
+
     return choise;
 }
 //*****************************************
@@ -544,6 +561,7 @@ int start(int board[][size], char ch, int ColorUser1, int ColorUser2, int turn)
         }
     }
 }
+//*****************************************
 void EXIT()
 {
     system("cls");
