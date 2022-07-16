@@ -16,17 +16,13 @@ void play(int board[][size], int USER, int step, char biny[]);
 char menu();
 void PrintBoard(int board[][size], int column, int USER, int ColorUser1, int ColorUser2);
 void color(int *ColorUser1, int *ColorUser2);
-int start(int board[][size], char ch, int ColorUser1, int ColorUser2, int turn);
+int start(int board[][size], int ColorUser1, int ColorUser2, int turn);
 FILE *fptr;
 
 //*****************************************
 int main()
 {
-    fptr = fopen("2.txt", "r");
-    if (fptr == NULL)
-    {
-        printf("cant open the file\n");
-    }
+
     printf("\n\nwelcome to  ''4 IN A ROW''  game. \n"
            "we wish you have a nice time... \n\n");
     int turn = 2;
@@ -42,6 +38,11 @@ int main()
         {
         case 'f':
         case 'F':
+            fptr = fopen("2.txt", "r");
+            if (fptr == NULL)
+            {
+                printf("cant open the file\n");
+            }
             FileR(board);
             break;
         case 'H':
@@ -73,7 +74,7 @@ int main()
         case 's':
             color(&ColorUser1, &ColorUser2);
             PrintBoard(board, 0, 0, 0, 0);
-            start(board, ch, ColorUser1, ColorUser2, turn);
+            start(board, ColorUser1, ColorUser2, turn);
             break;
 
             // default:
@@ -264,8 +265,6 @@ void play(int board[][size], int USER, int step, char biny4[8])
 
     if (USER == 1 && check_board(board))
     {
-        fclose(fptr);
-        fopen("2.txt", "a+");
 
         fprintf(fptr, "\n%s\n", biny4);
         printf("\n\n\nWIN USER '1' \n");
@@ -275,8 +274,7 @@ void play(int board[][size], int USER, int step, char biny4[8])
     }
     else if (USER == 2 && check_board(board))
     {
-        fclose(fptr);
-        fopen("2.txt", "a+");
+
         fprintf(fptr, "\n%s\n", biny4);
         printf("WIN USER '2' \n");
         printf("press any key to exit...\n");
@@ -291,7 +289,8 @@ char menu()
         "choise what do you want to happen?\n"
         "1 . (H)ELP\n"
         "2 . (S)TART\n"
-        "3 . (E)XIT\n"
+        "3 . (F)ile\n"
+        "4 . (E)XIT\n"
         "Enter choise ---->  ");
     char choise;
     scanf("%c", &choise);
@@ -524,7 +523,7 @@ void color(int *ColorUser1, int *ColorUser2)
     } while (*ColorUser1 == *ColorUser2);
 }
 //*****************************************
-int start(int board[][size], char ch, int ColorUser1, int ColorUser2, int turn)
+int start(int board[][size], int ColorUser1, int ColorUser2, int turn)
 {
     static int step = 1;
     char biny4[4] = {""};
@@ -540,8 +539,11 @@ int start(int board[][size], char ch, int ColorUser1, int ColorUser2, int turn)
                 scanf("%d", &column1);
                 if (column1 == -1)
                 {
-                    fclose(fptr);
-                    fopen("2.txt", "a+");
+                    fptr = fopen("2.txt", "r");
+                    if (fptr == NULL)
+                    {
+                        printf("cant open the file\n");
+                    }
                     step--;
                     bin2(step, biny4);
                     fprintf(fptr, "\n%s\n", biny4);
@@ -549,8 +551,8 @@ int start(int board[][size], char ch, int ColorUser1, int ColorUser2, int turn)
                     EXIT();
                 }
             } while (column1 > 7 || column1 < 0);
-            FileW(1, column1, ColorUser1, step);
 
+            FileW(1, column1, ColorUser1, step);
             system("cls");
             PrintBoard(board, column1, 1, ColorUser1, ColorUser2);
             play(board, 1, step, biny4);
@@ -564,8 +566,12 @@ int start(int board[][size], char ch, int ColorUser1, int ColorUser2, int turn)
                 scanf("%d", &column2);
                 if (column2 == -1)
                 {
-                    fclose(fptr);
-                    fopen("2.txt", "a+");
+
+                    fptr = fopen("2.txt", "r");
+                    if (fptr == NULL)
+                    {
+                        printf("cant open the file\n");
+                    }
                     step--;
                     bin2(step, biny4);
                     fprintf(fptr, "\n%s\n", biny4);
@@ -596,7 +602,7 @@ void EXIT()
 //*****************************************
 int FileR(int board[][size])
 {
-    fptr = fopen("2.txt", "r+");
+
     char user[4] = {""};
     char column[4] = {""};
     char color[4] = {""};
@@ -607,6 +613,7 @@ int FileR(int board[][size])
     color1 = ReBin(color);
     fscanf(fptr, "%3s%3s%3s\n", user, column, color);
     color2 = ReBin(color);
+
     rewind(fptr);
 
     while (!feof(fptr))
@@ -614,13 +621,41 @@ int FileR(int board[][size])
         fscanf(fptr, "%3s%3s%3s\n", user, column, color);
         int User = ReBin(user);
         int Column = ReBin(column);
+        system("cls");
         PrintBoard(board, Column, User, color1, color2);
+        if (User == 1 && check_board(board))
+        {
+
+            fopen("2.txt", "w+");
+
+            printf("\n\n\nWIN USER '1' \n");
+            printf("press any key to exit...\n");
+            getch();
+            EXIT();
+        }
+        else if (User == 2 && check_board(board))
+        {
+
+            fopen("2.txt", "a+");
+            printf("WIN USER '2' \n");
+            printf("press any key to exit...\n");
+            getch();
+            EXIT();
+        }
+        printf("press eny key to continue next step-->");
+        getch();
     }
+    printf("\n");
+    start(board,  color1, color2, 1);
 }
 //*****************************************
 void FileW(int user, int column, int color, int step)
 {
-
+    fptr = fopen("2.txt", "a+");
+    if (fptr == NULL)
+    {
+        printf("cant open the file\n");
+    }
     char biny1[4] = {""};
     char biny2[4] = {""};
     char biny3[4] = {""};
@@ -631,11 +666,11 @@ void FileW(int user, int column, int color, int step)
 
     if (user == 1)
     {
-        fprintf(fptr, "%s%s%s\n\n", biny1, biny2, biny3);
+        fprintf(fptr, "\n%s%s%s\n", biny1, biny2, biny3);
     }
     if (user == 2)
     {
-        fprintf(fptr, "%s%s%s\n\n", biny1, biny2, biny3);
+        fprintf(fptr, "\n%s%s%s\n", biny1, biny2, biny3);
     }
 }
 //*****************************************
