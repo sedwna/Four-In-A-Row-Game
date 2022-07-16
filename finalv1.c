@@ -4,7 +4,11 @@
 #include <stdbool.h>
 #define size 8
 #define row 8
+#define A 1
+#define B 0
 
+void bin(int a, char biny[]);
+void FileW(int user, int column, int color);
 void EXIT();
 bool check_board(int board[][size]);
 void play(int board[][size], int USER);
@@ -12,10 +16,16 @@ char menu();
 void PrintBoard(int board[][size], int column, int USER, int ColorUser1, int ColorUser2);
 void color(int *ColorUser1, int *ColorUser2);
 int start(int board[][size], char ch, int ColorUser1, int ColorUser2, int turn);
+FILE *fptr;
 
 //*****************************************
 int main()
 {
+    fptr = fopen("2.txt", "w+");
+    if (fptr == NULL)
+    {
+        printf("cant open the file\n");
+    }
     printf("\n\nwelcome to  ''4 IN A ROW''  game. \n"
            "we wish you have a nice time... \n\n");
     int turn = 2;
@@ -25,7 +35,7 @@ int main()
     int board[size][size] = {0};
     ch = menu();
 
-    while (1)
+    while (ch != 'E' || ch != 'e')
     {
         switch (ch)
         {
@@ -62,19 +72,16 @@ int main()
             start(board, ch, ColorUser1, ColorUser2, turn);
             break;
 
-        case 'E':
-        case 'e':
-
-            EXIT();
-            break;
-
-        //default:
-            //system("cls");
-            //printf("\n\033[31m PLS ENTER VALID WORD!!! \033[0m\n");
-            //ch = menu();
-           // break;
+            // default:
+            // system("cls");
+            // printf("\n\033[31m PLS ENTER VALID WORD!!! \033[0m\n");
+            // ch = menu();
+            // break;
         }
+
+        ch = menu();
     }
+    EXIT();
 
     return 0;
 }
@@ -317,7 +324,7 @@ void PrintBoard(int board[][size], int column, int USER, int ColorUser1, int Col
     }
 
     // start
-    printf("   1     2     3     4     5     6     7     8\n");
+    printf("   0     1     2     3     4     5     6     7\n");
     printf("\033[95m%c\033[0m", 43);
     for (size_t i = 0; i < size * 5 + 7; i++)
         printf("\033[95m%c\033[0m", 45);
@@ -521,21 +528,21 @@ int start(int board[][size], char ch, int ColorUser1, int ColorUser2, int turn)
 
     while (1)
     {
-        int column1 = 0;
-        int column2 = 0;
+        int column1 = -1;
+        int column2 = -1;
         if (turn % 2 == 0)
         {
             do
             {
                 printf("turn USER'1' choise column (1-8) --->");
                 scanf("%d", &column1);
-                if (column1 == 0)
+                if (column1 == -1)
                 {
                     EXIT();
                 }
-            } while (column1 >= 9 || column1 <= 0);
+            } while (column1 > 7 || column1 < 0);
+            FileW(1, column1, ColorUser1);
 
-            column1--;
             system("cls");
             PrintBoard(board, column1, 1, ColorUser1, ColorUser2);
             play(board, 1);
@@ -547,13 +554,13 @@ int start(int board[][size], char ch, int ColorUser1, int ColorUser2, int turn)
             {
                 printf("turn USER'2' choise column (1-8) --->");
                 scanf("%d", &column2);
-                if (column2 == 0)
+                if (column2 == -1)
                 {
                     EXIT();
                 }
-            } while (column2 >= 9 || column2 <= 0);
+            } while (column2 > 7 || column2 < 0);
+            FileW(2, column2, ColorUser2);
 
-            column2--;
             system("cls");
             PrintBoard(board, column2, 2, ColorUser1, ColorUser2);
             play(board, 2);
@@ -567,4 +574,57 @@ void EXIT()
     system("cls");
     printf("\n until next time, Gby ...\n");
     exit(0);
+}
+//*****************************************
+void FileR()
+{
+
+    FILE *fptr;
+
+    fptr = fopen("1.txt", "a+");
+    if (fptr == NULL)
+    {
+        printf("cant open the file\n");
+    }
+    else
+    {
+    }
+}
+//*****************************************
+void FileW(int user, int column, int color)
+{
+
+    char biny1[4] = {""};
+    char biny2[4] = {""};
+    char biny3[4] = {""};
+    bin(user, biny1);
+    bin(column, biny2);
+    bin(color, biny3);
+
+    if (user == 1)
+    {
+        fprintf(fptr, "%s%s%s\n\n", biny1, biny2, biny3);
+    }
+    if (user == 2)
+    {
+        fprintf(fptr, "%s%s%s\n\n", biny1, biny2, biny3);
+    }
+}
+//*****************************************
+void bin(int a, char biny[4])
+{
+
+    for (int i = 2; i >= 0; --i)
+    {
+        if (a % 2 == 1)
+        {
+            biny[i] = 'A';
+        }
+        else
+        {
+            biny[i] = 'B';
+        }
+
+        a /= 2;
+    }
 }
