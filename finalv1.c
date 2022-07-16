@@ -5,12 +5,12 @@
 #define size 8
 #define row 8
 
-void bin2(int a, char biny[7]);
+void bin2(int a, char biny[]);
 void bin(int a, char biny[]);
 void FileW(int user, int column, int color, int step);
 void EXIT();
 bool check_board(int board[][size]);
-void play(int board[][size], int USER, int step);
+void play(int board[][size], int USER, int step, char biny[]);
 char menu();
 void PrintBoard(int board[][size], int column, int USER, int ColorUser1, int ColorUser2);
 void color(int *ColorUser1, int *ColorUser2);
@@ -253,17 +253,15 @@ bool check_board(int board[][size])
     return false;
 }
 //*****************************************
-void play(int board[][size], int USER, int step)
+void play(int board[][size], int USER, int step, char biny4[8])
 {
-
-    char biny4[4] = {""};
     bin2(step, biny4);
 
     if (USER == 1 && check_board(board))
     {
         fclose(fptr);
         fopen("2.txt", "a+");
-        rewind(fptr);
+
         fprintf(fptr, "\n%s\n", biny4);
         printf("\n\n\nWIN USER '1' \n");
         printf("press any key to exit...\n");
@@ -274,7 +272,6 @@ void play(int board[][size], int USER, int step)
     {
         fclose(fptr);
         fopen("2.txt", "a+");
-        rewind(fptr);
         fprintf(fptr, "\n%s\n", biny4);
         printf("WIN USER '2' \n");
         printf("press any key to exit...\n");
@@ -525,7 +522,7 @@ void color(int *ColorUser1, int *ColorUser2)
 int start(int board[][size], char ch, int ColorUser1, int ColorUser2, int turn)
 {
     static int step = 1;
-
+    char biny4[4] = {""};
     while (step != 65)
     {
         int column1 = -1;
@@ -538,6 +535,12 @@ int start(int board[][size], char ch, int ColorUser1, int ColorUser2, int turn)
                 scanf("%d", &column1);
                 if (column1 == -1)
                 {
+                    fclose(fptr);
+                    fopen("2.txt", "a+");
+                    step--;
+                    bin2(step, biny4);
+                    fprintf(fptr, "\n%s\n", biny4);
+
                     EXIT();
                 }
             } while (column1 > 7 || column1 < 0);
@@ -545,7 +548,7 @@ int start(int board[][size], char ch, int ColorUser1, int ColorUser2, int turn)
 
             system("cls");
             PrintBoard(board, column1, 1, ColorUser1, ColorUser2);
-            play(board, 1, step);
+            play(board, 1, step, biny4);
             turn++;
         }
         else
@@ -556,6 +559,11 @@ int start(int board[][size], char ch, int ColorUser1, int ColorUser2, int turn)
                 scanf("%d", &column2);
                 if (column2 == -1)
                 {
+                    fclose(fptr);
+                    fopen("2.txt", "a+");
+                    step--;
+                    bin2(step, biny4);
+                    fprintf(fptr, "\n%s\n", biny4);
                     EXIT();
                 }
             } while (column2 > 7 || column2 < 0);
@@ -563,7 +571,7 @@ int start(int board[][size], char ch, int ColorUser1, int ColorUser2, int turn)
             FileW(2, column2, ColorUser2, step);
             system("cls");
             PrintBoard(board, column2, 2, ColorUser1, ColorUser2);
-            play(board, 2, step);
+            play(board, 2, step, biny4);
             turn++;
         }
         step++;
@@ -583,17 +591,7 @@ void EXIT()
 //*****************************************
 void FileR()
 {
-
-    FILE *fptr;
-
-    fptr = fopen("1.txt", "a+");
-    if (fptr == NULL)
-    {
-        printf("cant open the file\n");
-    }
-    else
-    {
-    }
+    
 }
 //*****************************************
 void FileW(int user, int column, int color, int step)
@@ -602,19 +600,20 @@ void FileW(int user, int column, int color, int step)
     char biny1[4] = {""};
     char biny2[4] = {""};
     char biny3[4] = {""};
+    
+        bin(user, biny1);
+        bin(column, biny2);
+        bin(color, biny3);
 
-    bin(user, biny1);
-    bin(column, biny2);
-    bin(color, biny3);
-
-    if (user == 1)
-    {
-        fprintf(fptr, "%s%s%s\n\n", biny1, biny2, biny3);
-    }
-    if (user == 2)
-    {
-        fprintf(fptr, "%s%s%s\n\n", biny1, biny2, biny3);
-    }
+        if (user == 1)
+        {
+            fprintf(fptr, "%s%s%s\n\n", biny1, biny2, biny3);
+        }
+        if (user == 2)
+        {
+            fprintf(fptr, "%s%s%s\n\n", biny1, biny2, biny3);
+        }
+        
 }
 //*****************************************
 void bin(int a, char biny[4])
@@ -634,10 +633,10 @@ void bin(int a, char biny[4])
         a /= 2;
     }
 }
-void bin2(int a, char biny[7])
+void bin2(int a, char biny[8])
 {
-
-    for (int i = 5; i >= 0; --i)
+    biny[7] = '\0';
+    for (int i = 6; i >= 0; --i)
     {
         if (a % 2 == 1)
         {
