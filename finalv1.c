@@ -2,9 +2,11 @@
 #include <stdlib.h>
 #include <conio.h>
 #include <stdbool.h>
+#include <math.h>
 #define size 8
 #define row 8
-
+int ReBin(char a[]);
+int FileR(int board[][size]);
 void bin2(int a, char biny[]);
 void bin(int a, char biny[]);
 void FileW(int user, int column, int color, int step);
@@ -20,7 +22,7 @@ FILE *fptr;
 //*****************************************
 int main()
 {
-    fptr = fopen("2.txt", "w");
+    fptr = fopen("2.txt", "r");
     if (fptr == NULL)
     {
         printf("cant open the file\n");
@@ -38,7 +40,10 @@ int main()
     {
         switch (ch)
         {
-
+        case 'f':
+        case 'F':
+            FileR(board);
+            break;
         case 'H':
         case 'h':
             // system("cls");
@@ -589,9 +594,28 @@ void EXIT()
     exit(0);
 }
 //*****************************************
-void FileR()
+int FileR(int board[][size])
 {
-    
+    fptr = fopen("2.txt", "r+");
+    char user[4] = {""};
+    char column[4] = {""};
+    char color[4] = {""};
+    int color1 = 0;
+    int color2 = 0;
+
+    fscanf(fptr, "%3s%3s%3s\n", user, column, color);
+    color1 = ReBin(color);
+    fscanf(fptr, "%3s%3s%3s\n", user, column, color);
+    color2 = ReBin(color);
+    rewind(fptr);
+
+    while (!feof(fptr))
+    {
+        fscanf(fptr, "%3s%3s%3s\n", user, column, color);
+        int User = ReBin(user);
+        int Column = ReBin(column);
+        PrintBoard(board, Column, User, color1, color2);
+    }
 }
 //*****************************************
 void FileW(int user, int column, int color, int step)
@@ -600,20 +624,19 @@ void FileW(int user, int column, int color, int step)
     char biny1[4] = {""};
     char biny2[4] = {""};
     char biny3[4] = {""};
-    
-        bin(user, biny1);
-        bin(column, biny2);
-        bin(color, biny3);
 
-        if (user == 1)
-        {
-            fprintf(fptr, "%s%s%s\n\n", biny1, biny2, biny3);
-        }
-        if (user == 2)
-        {
-            fprintf(fptr, "%s%s%s\n\n", biny1, biny2, biny3);
-        }
-        
+    bin(user, biny1);
+    bin(column, biny2);
+    bin(color, biny3);
+
+    if (user == 1)
+    {
+        fprintf(fptr, "%s%s%s\n\n", biny1, biny2, biny3);
+    }
+    if (user == 2)
+    {
+        fprintf(fptr, "%s%s%s\n\n", biny1, biny2, biny3);
+    }
 }
 //*****************************************
 void bin(int a, char biny[4])
@@ -633,6 +656,7 @@ void bin(int a, char biny[4])
         a /= 2;
     }
 }
+//*****************************************
 void bin2(int a, char biny[8])
 {
     biny[7] = '\0';
@@ -649,4 +673,22 @@ void bin2(int a, char biny[8])
 
         a /= 2;
     }
+}
+//*****************************************
+int ReBin(char a[4])
+{
+    int x = 0;
+    int j = 2;
+    for (size_t i = 0; i < 3; i++, j--)
+    {
+        if (a[i] == 'A')
+        {
+            x += pow(2, j);
+        }
+        else
+        {
+            x += 0;
+        }
+    }
+    return x;
 }
