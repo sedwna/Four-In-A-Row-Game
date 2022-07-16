@@ -5,6 +5,8 @@
 #include <math.h>
 #define size 8
 #define row 8
+
+void MergeFile(char step[8]);
 int ReBin(char a[]);
 int FileR(int board[][size]);
 void bin2(int a, char biny[]);
@@ -18,6 +20,7 @@ void PrintBoard(int board[][size], int column, int USER, int ColorUser1, int Col
 void color(int *ColorUser1, int *ColorUser2);
 int start(int board[][size], int ColorUser1, int ColorUser2, int turn);
 FILE *fptr;
+FILE *mptr;
 
 //*****************************************
 int main()
@@ -38,11 +41,6 @@ int main()
         {
         case 'f':
         case 'F':
-            fptr = fopen("2.txt", "r");
-            if (fptr == NULL)
-            {
-                printf("cant open the file\n");
-            }
             FileR(board);
             break;
         case 'H':
@@ -266,7 +264,6 @@ void play(int board[][size], int USER, int step, char biny4[8])
     if (USER == 1 && check_board(board))
     {
 
-        fprintf(fptr, "\n%s\n", biny4);
         printf("\n\n\nWIN USER '1' \n");
         printf("press any key to exit...\n");
         getch();
@@ -275,7 +272,6 @@ void play(int board[][size], int USER, int step, char biny4[8])
     else if (USER == 2 && check_board(board))
     {
 
-        fprintf(fptr, "\n%s\n", biny4);
         printf("WIN USER '2' \n");
         printf("press any key to exit...\n");
         getch();
@@ -546,8 +542,6 @@ int start(int board[][size], int ColorUser1, int ColorUser2, int turn)
                     }
                     step--;
                     bin2(step, biny4);
-                    fprintf(fptr, "\n%s\n", biny4);
-
                     EXIT();
                 }
             } while (column1 > 7 || column1 < 0);
@@ -567,14 +561,8 @@ int start(int board[][size], int ColorUser1, int ColorUser2, int turn)
                 if (column2 == -1)
                 {
 
-                    fptr = fopen("2.txt", "r");
-                    if (fptr == NULL)
-                    {
-                        printf("cant open the file\n");
-                    }
                     step--;
                     bin2(step, biny4);
-                    fprintf(fptr, "\n%s\n", biny4);
                     EXIT();
                 }
             } while (column2 > 7 || column2 < 0);
@@ -602,7 +590,11 @@ void EXIT()
 //*****************************************
 int FileR(int board[][size])
 {
-
+    fptr = fopen("2.txt", "r");
+    if (fptr == NULL)
+    {
+        printf("cant open the file\n");
+    }
     char user[4] = {""};
     char column[4] = {""};
     char color[4] = {""};
@@ -626,8 +618,6 @@ int FileR(int board[][size])
         if (User == 1 && check_board(board))
         {
 
-            fopen("2.txt", "w+");
-
             printf("\n\n\nWIN USER '1' \n");
             printf("press any key to exit...\n");
             getch();
@@ -635,8 +625,6 @@ int FileR(int board[][size])
         }
         else if (User == 2 && check_board(board))
         {
-
-            fopen("2.txt", "a+");
             printf("WIN USER '2' \n");
             printf("press any key to exit...\n");
             getch();
@@ -646,7 +634,7 @@ int FileR(int board[][size])
         getch();
     }
     printf("\n");
-    start(board,  color1, color2, 1);
+    start(board, color1, color2, 1);
 }
 //*****************************************
 void FileW(int user, int column, int color, int step)
@@ -726,4 +714,24 @@ int ReBin(char a[4])
         }
     }
     return x;
+}
+void MergeFile(char step[8])
+{
+    char user[4];
+    char column[4];
+    char color[4];
+    mptr = fopen("3.txt", "a+");
+    if (mptr == NULL)
+    {
+        printf("cant open the file\n");
+    }
+    rewind(fptr);
+    fptr = fopen("3.txt", "a+");
+    if (fptr == NULL)
+    {
+        printf("cant open the file\n");
+    }
+    fprintf(mptr, "%3s\n", step);
+    fscanf(fptr, "%3s%3s%3s\n", user, column, color);
+    fprintf(mptr, "%3s%3s%3s\n", user, column, color);
 }
