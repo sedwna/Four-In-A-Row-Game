@@ -4,14 +4,13 @@
 #include <stdbool.h>
 #define size 8
 #define row 8
-#define A 1
-#define B 0
 
+void bin2(int a, char biny[7]);
 void bin(int a, char biny[]);
-void FileW(int user, int column, int color);
+void FileW(int user, int column, int color, int step);
 void EXIT();
 bool check_board(int board[][size]);
-void play(int board[][size], int USER);
+void play(int board[][size], int USER, int step);
 char menu();
 void PrintBoard(int board[][size], int column, int USER, int ColorUser1, int ColorUser2);
 void color(int *ColorUser1, int *ColorUser2);
@@ -21,7 +20,7 @@ FILE *fptr;
 //*****************************************
 int main()
 {
-    fptr = fopen("2.txt", "w+");
+    fptr = fopen("2.txt", "w");
     if (fptr == NULL)
     {
         printf("cant open the file\n");
@@ -90,9 +89,6 @@ bool check_board(int board[][size])
 {
     int i;
     int j;
-    static int step = 0;
-    step++;
-
     for (i = 0; i < row; i++) // check kardane satrha
     {
         int num = 0;
@@ -254,22 +250,21 @@ bool check_board(int board[][size])
         } while (copy_j != 7);
     }
 
-    if (step == 64)
-    {
-        printf("Equal\n");
-        printf("\npress any key to exit...\n");
-        getch();
-        EXIT();
-    }
-
     return false;
 }
 //*****************************************
-void play(int board[][size], int USER)
+void play(int board[][size], int USER, int step)
 {
+
+    char biny4[4] = {""};
+    bin2(step, biny4);
 
     if (USER == 1 && check_board(board))
     {
+        fclose(fptr);
+        fopen("2.txt", "a+");
+        rewind(fptr);
+        fprintf(fptr, "\n%s\n", biny4);
         printf("\n\n\nWIN USER '1' \n");
         printf("press any key to exit...\n");
         getch();
@@ -277,6 +272,10 @@ void play(int board[][size], int USER)
     }
     else if (USER == 2 && check_board(board))
     {
+        fclose(fptr);
+        fopen("2.txt", "a+");
+        rewind(fptr);
+        fprintf(fptr, "\n%s\n", biny4);
         printf("WIN USER '2' \n");
         printf("press any key to exit...\n");
         getch();
@@ -525,8 +524,9 @@ void color(int *ColorUser1, int *ColorUser2)
 //*****************************************
 int start(int board[][size], char ch, int ColorUser1, int ColorUser2, int turn)
 {
+    static int step = 1;
 
-    while (1)
+    while (step != 65)
     {
         int column1 = -1;
         int column2 = -1;
@@ -541,11 +541,11 @@ int start(int board[][size], char ch, int ColorUser1, int ColorUser2, int turn)
                     EXIT();
                 }
             } while (column1 > 7 || column1 < 0);
-            FileW(1, column1, ColorUser1);
+            FileW(1, column1, ColorUser1, step);
 
             system("cls");
             PrintBoard(board, column1, 1, ColorUser1, ColorUser2);
-            play(board, 1);
+            play(board, 1, step);
             turn++;
         }
         else
@@ -559,14 +559,19 @@ int start(int board[][size], char ch, int ColorUser1, int ColorUser2, int turn)
                     EXIT();
                 }
             } while (column2 > 7 || column2 < 0);
-            FileW(2, column2, ColorUser2);
 
+            FileW(2, column2, ColorUser2, step);
             system("cls");
             PrintBoard(board, column2, 2, ColorUser1, ColorUser2);
-            play(board, 2);
+            play(board, 2, step);
             turn++;
         }
+        step++;
     }
+    printf("Equal\n");
+    printf("\npress any key to exit...\n");
+    getch();
+    EXIT();
 }
 //*****************************************
 void EXIT()
@@ -591,12 +596,13 @@ void FileR()
     }
 }
 //*****************************************
-void FileW(int user, int column, int color)
+void FileW(int user, int column, int color, int step)
 {
 
     char biny1[4] = {""};
     char biny2[4] = {""};
     char biny3[4] = {""};
+
     bin(user, biny1);
     bin(column, biny2);
     bin(color, biny3);
@@ -615,6 +621,23 @@ void bin(int a, char biny[4])
 {
 
     for (int i = 2; i >= 0; --i)
+    {
+        if (a % 2 == 1)
+        {
+            biny[i] = 'A';
+        }
+        else
+        {
+            biny[i] = 'B';
+        }
+
+        a /= 2;
+    }
+}
+void bin2(int a, char biny[7])
+{
+
+    for (int i = 5; i >= 0; --i)
     {
         if (a % 2 == 1)
         {
