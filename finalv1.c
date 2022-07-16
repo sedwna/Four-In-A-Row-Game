@@ -590,6 +590,7 @@ void EXIT()
 //*****************************************
 int FileR(int board[][size])
 {
+    int turn = 2;
     fptr = fopen("2.txt", "r");
     if (fptr == NULL)
     {
@@ -610,6 +611,7 @@ int FileR(int board[][size])
 
     while (!feof(fptr))
     {
+        turn++;
         fscanf(fptr, "%3s%3s%3s\n", user, column, color);
         int User = ReBin(user);
         int Column = ReBin(column);
@@ -634,7 +636,14 @@ int FileR(int board[][size])
         getch();
     }
     printf("\n");
-    start(board, color1, color2, 1);
+    if (turn % 2 == 0)
+    {
+        start(board, color1, color2, turn);
+    }
+    else
+    {
+        start(board, color1, color2, turn);
+    }
 }
 //*****************************************
 void FileW(int user, int column, int color, int step)
