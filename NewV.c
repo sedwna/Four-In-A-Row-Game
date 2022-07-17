@@ -11,6 +11,7 @@ FILE *fptr;
 FILE *mptr;
 int board[size][size];
 //****************************************
+void Help();
 void PrintBoard(int board[][size], int column, int USER, int ColorUser1, int ColorUser2);
 void cycle(int step, int turn, int column, int coloruser1, int coloruser2, int bin[]);
 int ReConvertB_info(int bin[]);
@@ -41,7 +42,8 @@ struct Template
 //****************************************
 int main()
 {
-
+    printf("\n\nwelcome to  ''4 IN A ROW''  game. \n"
+           "we wish you have a nice time... \n\n");
     char choise;
     menu(&choise);
 
@@ -57,6 +59,11 @@ int main()
         case 'F':
             FRead(board);
             getch();
+            break;
+        case 'h':
+        case 'H':
+            Help();
+
             break;
         default:
             printf("\n\033[31m PLS ENTER VALID WORD!!! \033[0m\n");
@@ -79,6 +86,29 @@ void menu(char *choise)
         "4 . (E)XIT\n"
         "Enter choise ---->  ");
     scanf("%c", choise);
+}
+//****************************************
+void Help()
+{
+
+    printf(" HELP 4 In a Row\n\n"
+
+           "your goal is to get four of your pieces\n"
+           "to line up in a row before the other player does.\n\n");
+
+    printf("press any key to continue...\n");
+    getch();
+
+    printf("You choose a game piece color.\n\n"
+           "You'll have several pieces so you're able to fill in the board\n"
+           "The board is arranged with empty spaces.\n\n");
+
+    printf("press any key to continue...\n");
+    getch();
+
+    printf("You and your opponent take turns placing your pieces in those spaces in\n"
+           "an effort to connect four of your own pieces in a row\n\n"
+           "you can EXIT ever you enter the (-1) in game.\n");
 }
 //****************************************
 int Start(int board[][size])
@@ -258,7 +288,7 @@ void FRead(int board[][8])
 
     fopen("3.bin", "rb");
     fread(&template, sizeof(struct Template), 1, mptr);
-    while (Step != 1)
+    while (Step != 0)
     {
 
         fread(&temp, sizeof(struct Info), 1, mptr);
@@ -302,7 +332,7 @@ void FRead(int board[][8])
     while (turn != 65)
     {
         cycle(Step, turn, Column, Color1, Color2, bin);
-       }
+    }
     fclose(mptr);
 }
 //*****************************************
@@ -479,7 +509,7 @@ void cycle(int step, int turn, int column, int coloruser1, int coloruser2, int b
             }
             turn++;
         }
-        
+
         step++;
     }
 }
