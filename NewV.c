@@ -10,7 +10,7 @@
 FILE *fptr;
 FILE *mptr;
 //****************************************
-void merge(int bin[],int step);
+void merge(int bin[], int step);
 void ConvertB_info(int dec, int bin[3]);
 void ConvertB_step(int dec, int bin[7]);
 void FRead();
@@ -109,9 +109,9 @@ int Start()
                 // {
                 //    printf("%d", bin[i]);
                 //}
-                //printf("\n");
-                //getch();
-                merge(bin,step);
+                // printf("\n");
+                // getch();
+                merge(bin, step);
                 printf("\n\n\nWIN USER '1' \n");
                 printf("press any key to exit...\n");
                 getch();
@@ -146,7 +146,7 @@ int ChoiseColumn(int turn, int *column)
 {
     do
     {
-        printf("turn USER'%d' choise column (0-7) --->", turn);
+        printf("turn USER'%d' choise column (0-7) --->", turn % 2 + 1);
         scanf("%d", column);
 
     } while (*column > 7 || *column < 0);
@@ -262,13 +262,13 @@ void FRead()
     struct Info temp;
     struct Template template;
     mptr = fopen("3.bin", "rb");
-    
-        fread(&template, sizeof(struct Template), 1, mptr);
-        for (int i = 0; i < 7; i++)
-        {
-            printf("%-d", template.STEP[i]);
-        }
-        printf("\n");
+
+    fread(&template, sizeof(struct Template), 1, mptr);
+    for (int i = 0; i < 7; i++)
+    {
+        printf("%-d", template.STEP[i]);
+    }
+    printf("\n");
 
     while (!feof(mptr))
     {
@@ -327,12 +327,20 @@ void ConvertB_step(int dec, int bin[7])
     }
 }
 //*****************************************
-void merge(int bin[7],int step)
+
+//*****************************************
+void merge(int bin[7], int step)
 {
     struct Template template;
     struct Info temp;
-    mptr = fopen("3.bin", "ab");
-    fptr = fopen("2.bin", "ab");
+   
+    fptr = fopen("2.bin", "rb");
+    mptr = fopen("3.bin", "ab+");
+    if (mptr == NULL)
+    {
+        printf("cant open file");
+    }
+    
 
     for (int i = 0; i < 7; i++)
     {
@@ -340,19 +348,37 @@ void merge(int bin[7],int step)
     }
 
     fwrite(&template, sizeof(struct Template), 1, mptr);
-    
-    //for (int i = 0; i < 7; i++)
+    fclose(mptr);
+    // for (int i = 0; i < 7; i++)
     //{
-    //    printf("%-d", template.STEP[i]);
-    //}
-   // printf("\n");
-   // getch();
-
-    for (size_t i = 1; i < step; i++)
+    //     printf("%-d", template.STEP[i]);
+    // }
+    // printf("\n");
+    // getch();
+    mptr = fopen("3.bin", "ab+");
+    while (!feof(fptr))
     {
         fread(&temp, sizeof(struct Info), 1, fptr);
+        for (int i = 0; i < 3; i++)
+        {
+            printf("%-d", temp.USER[i]);
+        }
+        for (int i = 0; i < 3; i++)
+        {
+            printf("%-d", temp.COLUMN[i]);
+        }
+        for (int i = 0; i < 3; i++)
+        {
+            printf("%-d", temp.COLOR[i]);
+        }
         fwrite(&temp, sizeof(struct Info), 1, mptr);
+        printf("\n---\n");
     }
+    fclose(mptr);
+    fclose(fptr);
+
+    getch();
+    
 }
 
 //*****************************************
