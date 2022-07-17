@@ -9,12 +9,14 @@
 //****************************************
 FILE *fptr;
 FILE *mptr;
+int board[size][size];
 //****************************************
+int ReConvertB_info(int bin[]);
 int ReConvertB_step(int bin[]);
 void merge(int bin[], int step);
 void ConvertB_info(int dec, int bin[3]);
 void ConvertB_step(int dec, int bin[7]);
-void FRead();
+void FRead(int board[][size]);
 void FWrite(int user, int column, int color);
 void menu(char *choise);
 bool check_board(int board[][size]);
@@ -22,7 +24,7 @@ void PrintBoard(int board[][size], int column, int USER, int ColorUser1, int Col
 void EXIT();
 int ChoiseColumn(int turn, int *column);
 void Color(int *ColorUser1, int *ColorUser2);
-int Start();
+int Start(int board[][size]);
 //****************************************
 struct Info
 {
@@ -38,6 +40,7 @@ struct Template
 //****************************************
 int main()
 {
+
     char choise;
     menu(&choise);
 
@@ -47,11 +50,11 @@ int main()
         {
         case 's':
         case 'S':
-            Start();
+            Start(board);
             break;
         case 'f':
         case 'F':
-            FRead();
+            FRead(board);
             getch();
             break;
         default:
@@ -77,9 +80,9 @@ void menu(char *choise)
     scanf("%c", choise);
 }
 //****************************************
-int Start()
+int Start(int board[][size])
 {
-    int board[size][size] = {0};
+
     int turn = 2;
     int step = 1;
     int coloruser1 = -1;
@@ -97,6 +100,8 @@ int Start()
             ChoiseColumn(turn, &column);
             if (column == -1)
             {
+                ConvertB_step(step, bin);
+                merge(bin, step);
                 EXIT();
             }
             system("cls");
@@ -105,13 +110,6 @@ int Start()
             if (check_board(board))
             {
                 ConvertB_step(step, bin);
-                // printf(" ---------%d\n\n",step);
-                // for (size_t i = 0; i < 7; i++)
-                // {
-                //    printf("%d", bin[i]);
-                //}
-                // printf("\n");
-                // getch();
                 merge(bin, step);
                 printf("\n\n\nWIN USER '1' \n");
                 printf("press any key to exit...\n");
@@ -124,6 +122,8 @@ int Start()
             ChoiseColumn(turn, &column);
             if (column == -1)
             {
+                ConvertB_step(step, bin);
+                merge(bin, step);
                 EXIT();
             }
             system("cls");
@@ -131,7 +131,8 @@ int Start()
             FWrite(2, column, coloruser2);
             if (check_board(board))
             {
-
+                ConvertB_step(step, bin);
+                merge(bin, step);
                 printf("\n\n\nWIN USER '2' \n");
                 printf("press any key to exit...\n");
                 getch();
@@ -150,7 +151,7 @@ int ChoiseColumn(int turn, int *column)
         printf("turn USER'%d' choise column (0-7) --->", turn % 2 + 1);
         scanf("%d", column);
 
-    } while (*column > 7 || *column < 0);
+    } while (*column > 7 || *column < -2);
 }
 //****************************************
 void Color(int *ColorUser1, int *ColorUser2)
@@ -258,50 +259,144 @@ void FWrite(int user, int column, int color)
     // close File
 }
 //*****************************************
-void FRead()
+void FRead(int board[][8])
 {
     int bin[7];
+    int bin1[3];
     int Step = 0;
     struct Info temp;
     struct Template template;
+    int Color1 = -1;
+    int Color2 = -1;
+    int Column = -1;
+    int User = -1;
+    int turn = 0;
 
     mptr = fopen("3.bin", "rb");
     // take the amount of binary
     fread(&template, sizeof(struct Template), 1, mptr);
-    for (int i = 0; i < 7; i++)
-    {
-        printf("%-d", template.STEP[i]);
-    }
-    printf("\n");
+
     // take the amount of decimal step for (int i = 0; i < 7; i++)
     for (int i = 0; i < 7; i++)
     {
         bin[i] = template.STEP[i];
     }
     Step = ReConvertB_step(bin);
-    //printf("\n\n---------%d------------\n\n",S);
+    turn = Step;
+    // printf("\n\n---------%d------------\n\n",S);
 
-    while (Step != 0)
+    fread(&temp, sizeof(struct Info), 1, mptr);
+    for (int i = 0; i < 3; i++)
     {
+        bin1[i] = temp.COLOR[i];
+    }
+    Color1 = ReConvertB_info(bin1);
+    // printf("\n 1%d\n", Color1);
+
+    fread(&temp, sizeof(struct Info), 1, mptr);
+    for (int i = 0; i < 3; i++)
+    {
+        bin1[i] = temp.COLOR[i];
+    }
+    Color2 = ReConvertB_info(bin1);
+    // printf("\n 2%d\n", Color2);
+
+    rewind(mptr);
+    fclose(mptr);
+
+    fopen("3.bin", "rb");
+    fread(&template, sizeof(struct Template), 1, mptr);
+    while (Step != 1)
+    {
+
         fread(&temp, sizeof(struct Info), 1, mptr);
+
         for (int i = 0; i < 3; i++)
         {
-            printf("%-d", temp.USER[i]);
+            bin1[i] = temp.COLUMN[i];
         }
+        Column = ReConvertB_info(bin1);
+
         for (int i = 0; i < 3; i++)
         {
-            printf("%-d", temp.COLUMN[i]);
+            bin1[i] = temp.USER[i];
         }
-        for (int i = 0; i < 3; i++)
+        User = ReConvertB_info(bin1);
+
+        // printf("\ncolumn %d user %d c1 %d c2 %d\n", Column, User, Color1, Color2);
+
+        system("cls");
+        PrintBoard(board, Column, User, Color1, Color2);
+
+        if (check_board(board))
         {
-            printf("%-d", temp.COLOR[i]);
+            ConvertB_step(Step, bin);
+            merge(bin, Step);
+            printf("\n\n\nWIN USER '%d' \n", User);
+            printf("press any key to exit...\n");
+            getch();
+            EXIT();
         }
 
-        printf("\n");
+        printf("\n pls enter any key to countinue step>>>");
+        getch();
         Step--;
     }
+    printf("\n");
+    turn++;
+    while (turn != 65)
+    {
 
-    fclose(mptr);
+        if (turn % 2 == 0)
+        {
+            ChoiseColumn(turn, &Column);
+            if (Column == -1)
+            {
+                ConvertB_step(turn, bin);
+                merge(bin, Step);
+                EXIT();
+            }
+            system("cls");
+            PrintBoard(board, Column, 1, Color1, Color2);
+            FWrite(1, Column, Color1);
+            if (check_board(board))
+            {
+                ConvertB_step(turn, bin);
+                merge(bin, turn);
+                printf("\n\n\nWIN USER '1' \n");
+                printf("press any key to exit...\n");
+                getch();
+                EXIT();
+            }
+            turn++;
+        }
+
+        else
+        {
+            ChoiseColumn(turn, &Column);
+            if (Column == -1)
+            {
+                ConvertB_step(turn, bin);
+                merge(bin, Step);
+                EXIT();
+            }
+            system("cls");
+            PrintBoard(board, Column, 2, Color1, Color2);
+            FWrite(2, Column, Color2);
+            if (check_board(board))
+            {
+                ConvertB_step(Step, bin);
+                merge(bin, Step);
+                printf("\n\n\nWIN USER '2' \n");
+                printf("press any key to exit...\n");
+                getch();
+                EXIT();
+            }
+            turn++;
+        }
+
+        fclose(mptr);
+    }
 }
 //*****************************************
 void ConvertB_info(int dec, int bin[3]) // get decimal convert to binery
@@ -341,21 +436,37 @@ void ConvertB_step(int dec, int bin[7])
 //*****************************************
 int ReConvertB_step(int bin[7])
 {
-    
-        int dec = 0;
-        int j = 6;
-        for (int i = 0 ; i <7; i++)
-        {
-            if (bin[i] != 0)
-            {
-                dec += pow(2, j);
-            }
-            //printf("\ndec  %d\n",dec);
-            j--;
-        }
 
-        return dec;
-    
+    int dec = 0;
+    int j = 6;
+    for (int i = 0; i < 7; i++)
+    {
+        if (bin[i] != 0)
+        {
+            dec += pow(2, j);
+        }
+        // printf("\ndec  %d\n",dec);
+        j--;
+    }
+
+    return dec;
+}
+int ReConvertB_info(int bin[3])
+{
+
+    int dec = 0;
+    int j = 2;
+
+    for (int i = 0; i < 3; i++)
+    {
+        if (bin[i] != 0)
+        {
+            dec += pow(2, j);
+        }
+        j--;
+    }
+
+    return dec;
 }
 //*****************************************
 void merge(int bin[7], int step)
