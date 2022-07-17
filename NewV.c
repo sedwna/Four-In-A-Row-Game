@@ -11,6 +11,8 @@ FILE *fptr;
 FILE *mptr;
 int board[size][size];
 //****************************************
+void PrintBoard(int board[][size], int column, int USER, int ColorUser1, int ColorUser2);
+void cycle(int step, int turn, int column, int coloruser1, int coloruser2, int bin[]);
 int ReConvertB_info(int bin[]);
 int ReConvertB_step(int bin[]);
 void merge(int bin[], int step);
@@ -36,7 +38,6 @@ struct Template
 {
     int STEP[7];
 };
-
 //****************************************
 int main()
 {
@@ -91,57 +92,7 @@ int Start(int board[][size])
     int bin[7];
     Color(&coloruser1, &coloruser2);
     PrintBoard(board, 0, 0, 0, 0);
-
-    while (step != 65)
-    {
-
-        if (turn % 2 == 0)
-        {
-            ChoiseColumn(turn, &column);
-            if (column == -1)
-            {
-                ConvertB_step(step, bin);
-                merge(bin, step);
-                EXIT();
-            }
-            system("cls");
-            PrintBoard(board, column, 1, coloruser1, coloruser2);
-            FWrite(1, column, coloruser1);
-            if (check_board(board))
-            {
-                ConvertB_step(step, bin);
-                merge(bin, step);
-                printf("\n\n\nWIN USER '1' \n");
-                printf("press any key to exit...\n");
-                getch();
-                EXIT();
-            }
-        }
-        else
-        {
-            ChoiseColumn(turn, &column);
-            if (column == -1)
-            {
-                ConvertB_step(step, bin);
-                merge(bin, step);
-                EXIT();
-            }
-            system("cls");
-            PrintBoard(board, column, 2, coloruser1, coloruser2);
-            FWrite(2, column, coloruser2);
-            if (check_board(board))
-            {
-                ConvertB_step(step, bin);
-                merge(bin, step);
-                printf("\n\n\nWIN USER '2' \n");
-                printf("press any key to exit...\n");
-                getch();
-                EXIT();
-            }
-        }
-        turn++;
-        step++;
-    }
+    cycle(step, turn, column, coloruser1, coloruser2, bin);
 }
 //****************************************
 int ChoiseColumn(int turn, int *column)
@@ -283,7 +234,8 @@ void FRead(int board[][8])
     }
     Step = ReConvertB_step(bin);
     turn = Step;
-    // printf("\n\n---------%d------------\n\n",S);
+    printf("\n\n---------%d------------\n\n", Step);
+    getch();
 
     fread(&temp, sizeof(struct Info), 1, mptr);
     for (int i = 0; i < 3; i++)
@@ -332,6 +284,8 @@ void FRead(int board[][8])
         {
             ConvertB_step(Step, bin);
             merge(bin, Step);
+            printf("\n---step %d----\n", Step);
+            getch();
             printf("\n\n\nWIN USER '%d' \n", User);
             printf("press any key to exit...\n");
             getch();
@@ -344,59 +298,12 @@ void FRead(int board[][8])
     }
     printf("\n");
     turn++;
+
     while (turn != 65)
     {
-
-        if (turn % 2 == 0)
-        {
-            ChoiseColumn(turn, &Column);
-            if (Column == -1)
-            {
-                ConvertB_step(turn, bin);
-                merge(bin, Step);
-                EXIT();
-            }
-            system("cls");
-            PrintBoard(board, Column, 1, Color1, Color2);
-            FWrite(1, Column, Color1);
-            if (check_board(board))
-            {
-                ConvertB_step(turn, bin);
-                merge(bin, turn);
-                printf("\n\n\nWIN USER '1' \n");
-                printf("press any key to exit...\n");
-                getch();
-                EXIT();
-            }
-            turn++;
-        }
-
-        else
-        {
-            ChoiseColumn(turn, &Column);
-            if (Column == -1)
-            {
-                ConvertB_step(turn, bin);
-                merge(bin, Step);
-                EXIT();
-            }
-            system("cls");
-            PrintBoard(board, Column, 2, Color1, Color2);
-            FWrite(2, Column, Color2);
-            if (check_board(board))
-            {
-                ConvertB_step(Step, bin);
-                merge(bin, Step);
-                printf("\n\n\nWIN USER '2' \n");
-                printf("press any key to exit...\n");
-                getch();
-                EXIT();
-            }
-            turn++;
-        }
-
-        fclose(mptr);
-    }
+        cycle(Step, turn, Column, Color1, Color2, bin);
+       }
+    fclose(mptr);
 }
 //*****************************************
 void ConvertB_info(int dec, int bin[3]) // get decimal convert to binery
@@ -451,6 +358,7 @@ int ReConvertB_step(int bin[7])
 
     return dec;
 }
+//*****************************************
 int ReConvertB_info(int bin[3])
 {
 
@@ -517,6 +425,63 @@ void merge(int bin[7], int step)
     fclose(fptr);
 
     getch();
+}
+//*****************************************
+void cycle(int step, int turn, int column, int coloruser1, int coloruser2, int bin[7])
+{
+
+    while (step != 65)
+    {
+
+        if (turn % 2 == 0)
+        {
+            ChoiseColumn(turn, &column);
+            if (column == -1)
+            {
+                ConvertB_step(step, bin);
+                merge(bin, step);
+                EXIT();
+            }
+            system("cls");
+            PrintBoard(board, column, 1, coloruser1, coloruser2);
+            FWrite(1, column, coloruser1);
+            if (check_board(board))
+            {
+                ConvertB_step(step, bin);
+                merge(bin, step);
+                printf("\n\n\nWIN USER '1' \n");
+                printf("press any key to exit...\n");
+                getch();
+                EXIT();
+            }
+            turn++;
+        }
+        else
+        {
+            ChoiseColumn(turn, &column);
+            if (column == -1)
+            {
+                ConvertB_step(step, bin);
+                merge(bin, step);
+                EXIT();
+            }
+            system("cls");
+            PrintBoard(board, column, 2, coloruser1, coloruser2);
+            FWrite(2, column, coloruser2);
+            if (check_board(board))
+            {
+                ConvertB_step(step, bin);
+                merge(bin, step);
+                printf("\n\n\nWIN USER '2' \n");
+                printf("press any key to exit...\n");
+                getch();
+                EXIT();
+            }
+            turn++;
+        }
+        
+        step++;
+    }
 }
 //*****************************************
 void PrintBoard(int board[][size], int column, int USER, int ColorUser1, int ColorUser2)
