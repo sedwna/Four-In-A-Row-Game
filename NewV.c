@@ -10,6 +10,7 @@
 FILE *fptr;
 FILE *mptr;
 //****************************************
+int ReConvertB_step(int bin[]);
 void merge(int bin[], int step);
 void ConvertB_info(int dec, int bin[3]);
 void ConvertB_step(int dec, int bin[7]);
@@ -259,18 +260,28 @@ void FWrite(int user, int column, int color)
 //*****************************************
 void FRead()
 {
+    int bin[7];
+    int Step = 0;
     struct Info temp;
     struct Template template;
-    mptr = fopen("3.bin", "rb");
 
+    mptr = fopen("3.bin", "rb");
+    // take the amount of binary
     fread(&template, sizeof(struct Template), 1, mptr);
     for (int i = 0; i < 7; i++)
     {
         printf("%-d", template.STEP[i]);
     }
     printf("\n");
+    // take the amount of decimal step for (int i = 0; i < 7; i++)
+    for (int i = 0; i < 7; i++)
+    {
+        bin[i] = template.STEP[i];
+    }
+    Step = ReConvertB_step(bin);
+    //printf("\n\n---------%d------------\n\n",S);
 
-    while (!feof(mptr))
+    while (Step != 0)
     {
         fread(&temp, sizeof(struct Info), 1, mptr);
         for (int i = 0; i < 3; i++)
@@ -287,6 +298,7 @@ void FRead()
         }
 
         printf("\n");
+        Step--;
     }
 
     fclose(mptr);
@@ -327,20 +339,36 @@ void ConvertB_step(int dec, int bin[7])
     }
 }
 //*****************************************
+int ReConvertB_step(int bin[7])
+{
+    
+        int dec = 0;
+        int j = 6;
+        for (int i = 0 ; i <7; i++)
+        {
+            if (bin[i] != 0)
+            {
+                dec += pow(2, j);
+            }
+            //printf("\ndec  %d\n",dec);
+            j--;
+        }
 
+        return dec;
+    
+}
 //*****************************************
 void merge(int bin[7], int step)
 {
     struct Template template;
     struct Info temp;
-   
+
     fptr = fopen("2.bin", "rb");
     mptr = fopen("3.bin", "ab+");
     if (mptr == NULL)
     {
         printf("cant open file");
     }
-    
 
     for (int i = 0; i < 7; i++)
     {
@@ -378,9 +406,7 @@ void merge(int bin[7], int step)
     fclose(fptr);
 
     getch();
-    
 }
-
 //*****************************************
 void PrintBoard(int board[][size], int column, int USER, int ColorUser1, int ColorUser2)
 {
