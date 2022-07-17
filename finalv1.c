@@ -724,23 +724,3 @@ int ReBin(char a[4])
     }
     return x;
 }
-void MergeFile(char step[8])
-{
-    char user[4];
-    char column[4];
-    char color[4];
-    mptr = fopen("3.txt", "a+");
-    if (mptr == NULL)
-    {
-        printf("cant open the file\n");
-    }
-    rewind(fptr);
-    fptr = fopen("3.txt", "a+");
-    if (fptr == NULL)
-    {
-        printf("cant open the file\n");
-    }
-    fprintf(mptr, "%3s\n", step);
-    fscanf(fptr, "%3s%3s%3s\n", user, column, color);
-    fprintf(mptr, "%3s%3s%3s\n", user, column, color);
-}
