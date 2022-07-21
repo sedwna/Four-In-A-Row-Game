@@ -11,6 +11,8 @@ FILE *fptr;
 FILE *mptr;
 int board[size][size];
 //****************************************
+void EXIT();
+bool check_four_nuts(int board[][size], int *num, int *copy_i, int *copy_j, int *first);
 void merge(int turn, int bin[]);
 void PrintFile();
 void Help();
@@ -25,7 +27,6 @@ void FWrite(int user, int column, int color);
 void menu(char *choise);
 bool check_board(int board[][size]);
 void PrintBoard(int board[][size], int column, int USER, int ColorUser1, int ColorUser2);
-void EXIT();
 int ChoiseColumn(int turn, int *column, int bin[]);
 void Color(int *ColorUser1, int *ColorUser2);
 int Start(int board[][size]);
@@ -290,6 +291,13 @@ void FRead(int board[][8])
     int User = -1;
     int turn = 0;
     mptr = fopen("save2.bin", "rb");
+    if (mptr == NULL)
+    {
+        printf("\033[0;31mcant open the save\033[0m");
+        printf("\033[0;91mpress any key to exit...\033[0m\n");
+        getch();
+        EXIT();
+    }
     fread(&template, sizeof(struct Template), 1, mptr);
     for (int i = 0; i < 7; i++)
     {
@@ -333,7 +341,7 @@ void FRead(int board[][8])
 
         if (check_board(board))
         {
-            printf("\n\n\033[0;93mWIN USER '%d'\033[0m \n\n",User);
+            printf("\n\n\033[0;93mWIN USER '%d'\033[0m \n\n", User);
             printf("\033[0;91mpress any key to exit...\033[0m\n");
             getch();
             EXIT();
@@ -494,6 +502,56 @@ void merge(int turn, int bin[])
     }
 }
 //*****************************************
+void PrintFile()
+{
+    struct Info temp;
+    struct Template template;
+    int bin[7];
+    int turn;
+    mptr = fopen("save2.bin", "rb");
+    if (mptr == NULL)
+    {
+        printf("\033[0;31mcant open the save\033[0m");
+        printf("\033[0;91mpress any key to exit...\033[0m\n");
+        getch();
+
+        EXIT();
+    }
+
+    printf("\n\033[0;96m----------save----------\033[0m\n");
+    fread(&template, sizeof(struct Template), 1, mptr);
+    for (int i = 0; i < 7; i++)
+    {
+        bin[i] = template.STEP[i];
+    }
+    turn = ReConvertB_step(bin);
+    for (int i = 0; i < 7; i++)
+    {
+        printf("%-d", template.STEP[i]);
+    }
+    printf("\n\n");
+    while (turn != 0)
+    {
+        fread(&temp, sizeof(struct Info), 1, mptr);
+        for (int i = 0; i < 3; i++)
+        {
+            printf("%-d", temp.USER[i]);
+        }
+        for (int i = 0; i < 3; i++)
+        {
+            printf("%-d", temp.COLUMN[i]);
+        }
+        for (int i = 0; i < 3; i++)
+        {
+            printf("%-d", temp.COLOR[i]);
+        }
+        printf("\n");
+        turn--;
+    }
+
+    fclose(mptr);
+}
+//*****************************************
 void PrintBoard(int board[][size], int column, int USER, int ColorUser1, int ColorUser2)
 {
     if (USER == 1)
@@ -651,45 +709,23 @@ void PrintBoard(int board[][size], int column, int USER, int ColorUser1, int Col
     }
 }
 //*****************************************
-void PrintFile()
+bool check_four_nuts(int board[][size], int *num, int *copy_i, int *copy_j, int *first)
 {
-    struct Info temp;
-    struct Template template;
-    int bin[7];
-    int turn;
-    mptr = fopen("save2.bin", "rb");
-    printf("\n\033[0;96m----------save----------\033[0m\n");
-    fread(&template, sizeof(struct Template), 1, mptr);
-    for (int i = 0; i < 7; i++)
+    if (*first != 0 && *first == board[*copy_i][*copy_j])
     {
-        bin[i] = template.STEP[i];
+        (*num)++;
     }
-    turn = ReConvertB_step(bin);
-    for (int i = 0; i < 7; i++)
+    else
     {
-        printf("%-d", template.STEP[i]);
+        *first = board[*copy_i][*copy_j];
+        *num = 0;
     }
-    printf("\n\n");
-    while (turn != 0)
+    if (*num == 3)
     {
-        fread(&temp, sizeof(struct Info), 1, mptr);
-        for (int i = 0; i < 3; i++)
-        {
-            printf("%-d", temp.USER[i]);
-        }
-        for (int i = 0; i < 3; i++)
-        {
-            printf("%-d", temp.COLUMN[i]);
-        }
-        for (int i = 0; i < 3; i++)
-        {
-            printf("%-d", temp.COLOR[i]);
-        }
-        printf("\n");
-        turn--;
+        return true;
     }
 
-    fclose(mptr);
+    return false;
 }
 //*****************************************
 bool check_board(int board[][size])
@@ -755,20 +791,11 @@ bool check_board(int board[][size])
         {
             copy_i--;
             copy_j++;
-
-            if (first != 0 && first == board[copy_i][copy_j])
-            {
-                num++;
-            }
-            else
-            {
-                first = board[copy_i][copy_j];
-                num = 0;
-            }
-            if (num == 3)
+            if (check_four_nuts(board, &num, &copy_i, &copy_j, &first))
             {
                 return true;
             }
+
         } while (copy_i != 0);
     }
 
@@ -784,16 +811,7 @@ bool check_board(int board[][size])
             copy_i--;
             copy_j++;
 
-            if (first != 0 && first == board[copy_i][copy_j])
-            {
-                num++;
-            }
-            else
-            {
-                first = board[copy_i][copy_j];
-                num = 0;
-            }
-            if (num == 3)
+            if (check_four_nuts(board, &num, &copy_i, &copy_j, &first))
             {
                 return true;
             }
@@ -812,16 +830,7 @@ bool check_board(int board[][size])
             copy_i++;
             copy_j++;
 
-            if (first != 0 && first == board[copy_i][copy_j])
-            {
-                num++;
-            }
-            else
-            {
-                first = board[copy_i][copy_j];
-                num = 0;
-            }
-            if (num == 3)
+            if (check_four_nuts(board, &num, &copy_i, &copy_j, &first))
             {
                 return true;
             }
@@ -841,21 +850,11 @@ bool check_board(int board[][size])
             copy_i++;
             copy_j++;
 
-            if (first != 0 && first == board[copy_i][copy_j])
-            {
-                num++;
-            }
-            else
-            {
-                first = board[copy_i][copy_j];
-                num = 0;
-            }
-            if (num == 3)
+            if (check_four_nuts(board, &num, &copy_i, &copy_j, &first))
             {
                 return true;
             }
         } while (copy_j != 7);
     }
-
     return false;
 }
