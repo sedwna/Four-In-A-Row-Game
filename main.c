@@ -40,12 +40,11 @@ struct Template
 {
     int STEP[7];
 };
-
 //****************************************
 int main()
 {
-    printf("\n\nwelcome to  ''4 IN A ROW''  game. \n"
-           "we wish you have a nice time... \n\n");
+    printf("\n\n\033[0;93mWelcome to  ''4 IN A ROW''  game. \n"
+           "we wish you have a nice time...\033[0m \n\n");
     char choise;
     menu(&choise);
 
@@ -60,7 +59,7 @@ int main()
         case 's':
         case 'S':
             FRead(board);
-            printf("\n Enter any key to return  menu\n");
+            printf("\n \033[0;96mEnter any key to return  menu\033[0m\n");
             getch();
             break;
         case 'h':
@@ -71,7 +70,7 @@ int main()
         case 'F':
         case 'f':
             PrintFile();
-            printf("\n Enter any key to return  menu\n");
+            printf("\n \033[0;96mEnter any key to return  menu\033[0m\n");
             getch();
             break;
         case 'e':
@@ -92,13 +91,13 @@ int main()
 void menu(char *choise)
 {
     printf(
-        "choise what do you want to happen?\n"
-        "1. (H)ELP\n"
-        "\033[0;32m2. (P)lay\033[0m to Creat a new game\n"
-        "\033[0;33m3. (S)ave\033[0m to Continue from last save\n"
-        "4. (F)ile to read a save file as (0 & 1) in terminal  \n"
+        "\033[0;91mchoise what do you want to happen?\033[0m\n\n"
+        "\033[0;95m1. (H)ELP\033[0m\n"
+        "\033[0;32m2. (P)lay\033[0m (to Creat a new game)\n"
+        "\033[0;33m3. (S)ave\033[0m (to Continue from last save)\n"
+        "\033[0;36m4. (F)ile\033[0m (to Read a save file as '0 & 1' in terminal)  \n"
         "\033[0;31m5. (E)XIT\033[0m\n"
-        "Enter choise ---->  ");
+        "\n\033[0;96mEnter choise ---->  \033[0m");
     scanf("%c", choise);
 }
 //****************************************
@@ -143,17 +142,17 @@ int Start(int board[][size])
 //****************************************
 int ChoiseColumn(int turn, int *column, int bin[7])
 {
-    printf("\033[0;31mExit by enter (-1)\033[0m\n\n");
+    printf("\033[0;91mExit by enter (-1)\033[0m\n\n");
     do
     {
 
         if (turn % 2 != 0)
         {
-            printf("turn USER'1' choise column (0-7) --->");
+            printf("\033[0;96mTurn USER'1' choise column (0-7) --->\033[0m");
         }
         else
         {
-            printf("turn USER'2' choise column (0-7) --->");
+            printf("\033[0;96mTurn USER'2' choise column (0-7) --->\033[0m");
         }
         scanf("%d", column);
         if (*column == -1)
@@ -170,16 +169,16 @@ int ChoiseColumn(int turn, int *column, int bin[7])
 void Color(int *ColorUser1, int *ColorUser2)
 {
     system("cls");
-    printf("\033[0;31mExit by enter (-1)\033[0m\n\n");
+    printf("\033[0;91mExit by enter (-1)\033[0m\n\n");
     // choise color for User 1
 
     do
     {
         *ColorUser1 = -1;
 
-        printf("\033[0;35mUSER'1'\033[0m pls choise your color:\n\n"
+        printf("\033[0;35mUSER'1'\033[0m \033[0;93mpls choise your color:\033[0m\n\n"
                "\033[0;31mRed(0)\033[0m    \033[0;33mYellow(1)\033[0m    \033[0;32mGreen(2)\033[0m    \033[0;34mBlue(3)\033[0m\n"
-               "Enter choise ---->  ");
+               "\n\033[0;96mEnter choise ---->  \033[0m");
         scanf("%d", ColorUser1);
         if (*ColorUser1 == -1)
         {
@@ -191,10 +190,10 @@ void Color(int *ColorUser1, int *ColorUser2)
     do
     {
         *ColorUser2 = -1;
-        printf("\n\033[0;36mUSER'2'\033[0m pls choise your color:\n"
-               "\033[0;31myou cant choise same color as the user 1\033[0m\n\n"
+        printf("\n\033[0;35mUSER'2'\033[0m \033[0;93mpls choise your color:\033[0m\n"
+               "\033[0;91myou cant choise same color as the user 1 !!!\033[0m\n\n"
                "\033[0;31mRed(0)\033[0m    \033[0;33mYellow(1)\033[0m    \033[0;32mGreen(2)\033[0m    \033[0;34mBlue(3)\033[0m\n"
-               "Enter choise ---->  ");
+               "\n\033[0;96mEnter choise ---->  \033[0m");
         scanf("%d", ColorUser2);
         if (*ColorUser2 == -1)
         {
@@ -207,16 +206,16 @@ void Color(int *ColorUser1, int *ColorUser2)
     {
         if (*ColorUser1 == *ColorUser2)
         {
-            printf("\nsame color pls change color \033[0;35mUSER'1'\033[0m or \033[0;36mUSER'2'\033[0m\n"
-                   "tell me user number to change color ---> ");
+            printf("\n\033[0;91msame color pls change color \033[0m\033[0;35mUSER'1'\033[0m \033[0;91mor \033[0m\033[0;36mUSER'2'\033[0m\n"
+                   "\033[0;93mtell me user number to change color ---> \033[0m ");
             int change = 0;
             scanf("%d", &change);
             if (change == 1)
             {
                 *ColorUser1 = -1;
-                printf("\nuser1 pls choise your color:\n\n"
+                printf("\n\033[0;93mUSER'1' pls choise your color:\033[0m\n"
                        "\033[0;31mRed(0)\033[0m    \033[0;33mYellow(1)\033[0m    \033[0;32mGreen(2)\033[0m    \033[0;34mBlue(3)\033[0m\n"
-                       "Enter choise ---->  ");
+                       "\n\033[0;96mEnter choise ---->  \033[0m");
                 scanf("%d", ColorUser1);
                 if (*ColorUser1 == -1)
                 {
@@ -226,10 +225,10 @@ void Color(int *ColorUser1, int *ColorUser2)
             else if (change == 2)
             {
                 *ColorUser2 = -1;
-                printf("\nuser2 pls choise your color:\n"
-                       "\033[0;31myou cant choise same color as the user 1\033[0m\n\n "
+                printf("\n\033[0;93mUSER'2' pls choise your color:\033[0m\n"
+                       "\033[0;91myou cant choise same color as the user 1 !!!\033[0m\n\n "
                        "\033[0;31mRed(0)\033[0m    \033[0;33mYellow(1)\033[0m    \033[0;32mGreen(2)\033[0m    \033[0;34mBlue(3)\033[0m\n"
-                       "Enter choise ---->  ");
+                       "\n\033[0;96mEnter choise ---->  \033[0m");
                 scanf("%d", ColorUser2);
                 if (*ColorUser2 == -1)
                 {
@@ -239,6 +238,7 @@ void Color(int *ColorUser1, int *ColorUser2)
         }
 
     } while (*ColorUser1 == *ColorUser2);
+    system("cls");
 }
 //****************************************
 void EXIT()
@@ -333,13 +333,13 @@ void FRead(int board[][8])
 
         if (check_board(board))
         {
-            printf("\n\n\nWIN USER '%d' \n", User);
-            printf("press any key to exit...\n");
+            printf("\n\n\033[0;93mWIN USER '%d'\033[0m \n\n",User);
+            printf("\033[0;91mpress any key to exit...\033[0m\n");
             getch();
             EXIT();
         }
 
-        printf("\n pls enter any key to countinue step>>>");
+        printf("\n \033[0;96mpls enter any key to countinue step --->\033[0m \n");
         getch();
         turn--;
     }
@@ -441,11 +441,11 @@ void cycle(int turn, int column, int coloruser1, int coloruser2, int bin[7])
             {
                 ConvertB_step(turn, bin);
                 merge(turn, bin);
-                printf("\n\n\nWIN USER '1' \n");
+                printf("\n\n\033[0;93mWIN USER '1'\033[0m \n\n");
                 fptr = fopen("save.bin", "wb");
                 fclose(fptr);
                 remove("save.bin");
-                printf("press any key to exit...\n");
+                printf("\033[0;91mpress any key to exit...\033[0m\n");
                 getch();
                 EXIT();
             }
@@ -461,11 +461,11 @@ void cycle(int turn, int column, int coloruser1, int coloruser2, int bin[7])
             {
                 ConvertB_step(turn, bin);
                 merge(turn, bin);
-                printf("\n\n\nWIN USER '2' \n");
+                printf("\n\n\033[0;93mWIN USER '2'\033[0m \n\n");
                 fptr = fopen("save.bin", "wb");
                 fclose(fptr);
                 remove("save.bin");
-                printf("press any key to exit...\n");
+                printf("\033[0;91mpress any key to exit...\033[0m\n");
                 getch();
                 EXIT();
             }
@@ -520,7 +520,7 @@ void PrintBoard(int board[][size], int column, int USER, int ColorUser1, int Col
     }
 
     // start
-    printf("   0     1     2     3     4     5     6     7\n");
+    printf("\033[0;96m   0     1     2     3     4     5     6     7\033[0m \n");
     printf("\033[95m%c\033[0m", 43);
     for (size_t i = 0; i < size * 5 + 7; i++)
         printf("\033[95m%c\033[0m", 45);
@@ -658,7 +658,7 @@ void PrintFile()
     int bin[7];
     int turn;
     mptr = fopen("save2.bin", "rb");
-    printf("\n----------save----------\n");
+    printf("\n\033[0;96m----------save----------\033[0m\n");
     fread(&template, sizeof(struct Template), 1, mptr);
     for (int i = 0; i < 7; i++)
     {
