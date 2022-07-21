@@ -351,14 +351,26 @@ void FRead(int board[][8])
         getch();
         turn--;
     }
-
+    if (Step == 64)
+    {
+        Step--;
+        ConvertB_step(turn, bin);
+        merge(turn, bin);
+        printf("\n\n\033[0;93mEqual\033[0m \n\n");
+        fptr = fopen("save.bin", "wb");
+        fclose(fptr);
+        remove("save.bin");
+        printf("\033[0;91mpress any key to exit...\033[0m\n");
+        getch();
+        EXIT();
+    }
     printf("\n");
     Step++;
+
     while (Step != 65)
     {
         cycle(Step, Column, Color1, Color2, bin);
         Step++;
-        getch();
     }
     fclose(mptr);
 }
@@ -480,6 +492,16 @@ void cycle(int turn, int column, int coloruser1, int coloruser2, int bin[7])
             turn++;
         }
     }
+    turn--;
+    ConvertB_step(turn, bin);
+    merge(turn, bin);
+    printf("\n\n\033[0;93mEqual\033[0m \n\n");
+    fptr = fopen("save.bin", "wb");
+    fclose(fptr);
+    remove("save.bin");
+    printf("\033[0;91mpress any key to exit...\033[0m\n");
+    getch();
+    EXIT();
 }
 //*****************************************
 void merge(int turn, int bin[])
