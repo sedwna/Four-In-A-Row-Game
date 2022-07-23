@@ -1,3 +1,10 @@
+/*
+student ID :
+student Name :
+
+student ID : 40012358014
+student Name : Sajad Dehqan
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <conio.h>
