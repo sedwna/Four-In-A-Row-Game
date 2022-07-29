@@ -1,10 +1,4 @@
-/*
-student ID :
-student Name :
 
-student ID : 40012358014
-student Name : Sajad Dehqan
-*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <conio.h>
@@ -300,7 +294,7 @@ void FRead(int board[][8])
     mptr = fopen("save2.bin", "rb");
     if (mptr == NULL)
     {
-        printf("\033[0;31mcant open the save\033[0m");
+        printf("\033[0;31mcant open the save\033[0m\n");
         printf("\033[0;91mpress any key to exit...\033[0m\n");
         getch();
         EXIT();
@@ -312,6 +306,14 @@ void FRead(int board[][8])
     }
     Step = ReConvertB_step(bin);
     turn = Step;
+    if (Step == 0 || Step == 1)
+    {
+        printf("\033[0;31mcant open the save\033[0m\n");
+        printf("\033[0;91mpress any key to exit...\033[0m\n");
+        getch();
+        EXIT();
+    }
+
     fread(&temp, sizeof(struct Info), 1, mptr); // read color user 1 from file and save
     for (int i = 0; i < 3; i++)
     {
@@ -554,6 +556,13 @@ void PrintFile()
         bin[i] = template.STEP[i];
     }
     turn = ReConvertB_step(bin);
+    if (turn == 0|| turn == 1)
+    {
+        printf("\033[0;31mcant open the save\033[0m\n");
+        printf("\033[0;91mpress any key to exit...\033[0m\n");
+        getch();
+        EXIT();
+    }
     for (int i = 0; i < 7; i++)
     {
         printf("%-d", template.STEP[i]);
