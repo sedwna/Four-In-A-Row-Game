@@ -109,18 +109,18 @@ The project is organized into the following functions:
 ---
 
 ### Main Menu
-```
+
 
 ![Example results](./photo/p3.jpg)  
 
-```
+
 ### Game Board
-```
+
 ![Example results](./photo/p1.jpg)  
 ![Example results](./photo/p2.jpg)  
 
 
-```
+
 
 ### Winning Message
 ```
