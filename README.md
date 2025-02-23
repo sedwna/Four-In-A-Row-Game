@@ -110,33 +110,16 @@ The project is organized into the following functions:
 
 ### Main Menu
 ```
-choise what do you want to happen?
 
-1. (H)ELP
-2. (P)lay (to Creat a new game)
-3. (S)ave (to Continue from last save)
-4. (F)ile (to Read a save file as '0 & 1' in terminal)
-5. (E)XIT
+![Association rules results](./photo/p3.png)  
 
-Enter choise ---->
 ```
-
 ### Game Board
 ```
-   0     1     2     3     4     5     6     7
-+---------------------------------------------+
-|     |     |     |     |     |     |     |     |
-+---------------------------------------------+
-|     |     |     |     |     |     |     |     |
-+---------------------------------------------+
-|     |     |     |     |     |     |     |     |
-+---------------------------------------------+
-|     |     |     |     |     |     |     |     |
-+---------------------------------------------+
-|     |     |     |     |     |     |     |     |
-+---------------------------------------------+
-|     |     |     |     |     |     |     |     |
-+---------------------------------------------+
+![Association rules results](./photo/p1.png)  
+![Association rules results](./photo/p2.png)  
+
+
 ```
 
 ### Winning Message
