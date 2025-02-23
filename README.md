@@ -111,13 +111,13 @@ The project is organized into the following functions:
 ### Main Menu
 ```
 
-![Association rules results](./photo/p3.png)  
+![Example results](./photo/p3.jpg)  
 
 ```
 ### Game Board
 ```
-![Association rules results](./photo/p1.png)  
-![Association rules results](./photo/p2.png)  
+![Example results](./photo/p1.jpg)  
+![Example results](./photo/p2.jpg)  
 
 
 ```
